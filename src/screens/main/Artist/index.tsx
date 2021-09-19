@@ -16,6 +16,7 @@ import SellList from './Favorite/SellList';
 import CollectionDetail from './Favorite/CollectionDetail';
 import ArtistDetail from './ArtistDetail';
 import FollowingArtistAllList from './Favorite/FollowingArtist/FollowingArtistAllList';
+import EasyPick from './EasyPick';
 
 
 const styles = StyleSheet.create(
@@ -75,6 +76,7 @@ const ArtistTabRoot = ({route,navigation}:Props)=>{
             <Tab.Navigator>
                 <Tab.Screen name="Favorite" component={Favorite} options={{swipeEnabled:false}} />
                 <Tab.Screen name="Analysis" component={Analysis} options={{swipeEnabled:false}}/>
+                <Tab.Screen name="EasyPick" component={EasyPick} options={{swipeEnabled:false}}/>
                 {/* <Tab.Screen name="EasyPick" component={EasyPick} options={{swipeEnabled:false}}/> */}
             </Tab.Navigator>
         </View>

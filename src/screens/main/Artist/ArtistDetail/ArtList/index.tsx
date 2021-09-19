@@ -11,7 +11,7 @@ const styles = StyleSheet.create(
     })
 );
 
-const Analysis = ({}) =>{
+const Community = ({}) =>{
     return (
         <>
         <View>
@@ -23,4 +23,4 @@ const Analysis = ({}) =>{
 }
 
 
-export default Analysis ;
+export default Community;

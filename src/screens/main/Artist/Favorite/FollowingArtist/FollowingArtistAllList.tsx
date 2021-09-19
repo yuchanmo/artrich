@@ -32,7 +32,7 @@ const CollectionItem = ({navigation,route}:Props)=>{
     return (
         <>
         <View >
-            <TouchableOpacity onPress={()=>navigation.navigate('CollectionDetail')}>
+            <TouchableOpacity onPress={()=>navigation.navigate('ArtistDetail')}>
                 <Card style={styles.collectionItemContainer}>
                     <Avatar.Image style={styles.avartarStyle} size={80} source={require('./mun.png')} />
                 </Card>

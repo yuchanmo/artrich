@@ -2,16 +2,16 @@ import { NavigationHelpersContext, RouteProp } from '@react-navigation/core';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React,{memo,useState,useEffect, useLayoutEffect} from 'react';
 import { Text, View,StyleSheet, FlatList,Image, TouchableOpacity, ImageBackground } from 'react-native';
-import { Button, Divider, Paragraph, Title } from 'react-native-paper';
+import { Avatar, Button, Divider, Paragraph, Title } from 'react-native-paper';
 import {SampleFlatListStyles} from '~/GlobalStyle';
 
 const styles = StyleSheet.create(
     ({
         ...SampleFlatListStyles,
-        cotainer:{
-            flex:1
-        },        
-      
+       followingArtistContainer:{
+           height:100,
+           width:100,
+       }       
     })
 );
 
@@ -22,29 +22,18 @@ type Props = {
 
 const CollectionItem = ({navigation,route}:Props)=>{
     return (
-        <View style={styles.sampleFlatListItemCotainer}>
-        <TouchableOpacity style={styles.sampleFlatListItemButton} onPress={()=>navigation.navigate('CollectionDetail')}>
+        <View style={styles.followingArtistContainer}>
+        <TouchableOpacity style={styles.sampleFlatListItemButton} onPress={()=>navigation.navigate('ArtistDetail')}>
               {/* <ImageBackground
                 source={ArtInfo.ImageUrl}
                 resizeMode="cover"
                 style={styles.image}
                 imageStyle={styles.image_imageStyle}
               > */}
-              <ImageBackground
-                source={require('./mun.png')}
-                resizeMode="cover"
-                style={styles.sampleFlatListItemImage}
-                imageStyle={styles.sampleFlatListItemImageStyle}
-              >               
-                
-              </ImageBackground>
-              <View style={styles.sampleFlatListItemDescriptionContainer}>
-                   <Text style={styles.sampleFlatListItemDescription}>작가</Text>
-                  <Text style={styles.sampleFlatListItemDescription}>작품이름</Text>
-                  <Text style={styles.sampleFlatListItemDescription}>소장일</Text>                  
-                  <Text style={styles.sampleFlatListItemDescription}>구입가</Text>                  
-                  <Text style={styles.sampleFlatListItemDescription}>증감률</Text>                  
-                </View>
+              <View style={{flexDirection:'column'}}>
+                 <Avatar.Image size={60} source={require('./mun.png')} />
+                 <Text style={styles.sampleFlatListItemDescription}>작가작가작가</Text>
+             </View>             
             </TouchableOpacity>
         </View>
     )
@@ -60,7 +49,7 @@ const FollowingArtistSampleList = ({route,navigation}:Props) =>{
         <View style={styles.sampleFlatListContainer}>
             <View style={styles.sampleFlatListTitleContainer}>
                 <Text style={styles.sampleFlatListTitleText}>FOLLOWING ARTIST</Text>
-                <Button style={styles.sampleFlatListMoreButtonText} onPress={()=>navigation.navigate('CollectionAllList')}>전체보기</Button>
+                <Button style={styles.sampleFlatListMoreButtonText} onPress={()=>navigation.navigate('FollowingArtistAllList')}>전체보기</Button>
             </View>
             <FlatList
                         horizontal={true}

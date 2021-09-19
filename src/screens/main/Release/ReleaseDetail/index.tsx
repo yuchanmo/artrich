@@ -1,4 +1,3 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React,{useState,useEffect, useLayoutEffect,memo} from 'react';
 import { Text, View,StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
@@ -23,25 +22,6 @@ const styles = StyleSheet.create(
 
     })
 );
-
-
-const Tab = createMaterialTopTabNavigator<ArtistStackParamList>();
-
-const ArtistTabRoot = ({route,navigation}:Props)=>{
-    let [serachingName,setSearchingName] = useState<string>('');
-    return (
-        <>
-        <View style={{flex:1}}>           
-            <Tab.Navigator>
-                <Tab.Screen name="Favorite" component={Favorite} options={{swipeEnabled:false}} />
-                <Tab.Screen name="Analysis" component={Analysis} options={{swipeEnabled:false}}/>
-                <Tab.Screen name="EasyPick" component={EasyPick} options={{swipeEnabled:false}}/>
-                {/* <Tab.Screen name="EasyPick" component={EasyPick} options={{swipeEnabled:false}}/> */}
-            </Tab.Navigator>
-        </View>
-        </>
-    );
-};
 
 const CollectionChartTrend = ()=>{
     return (
@@ -86,7 +66,7 @@ const CollectionImage = ({img,idx,onPress})=>{
 
 
 
-const CollectionDetail = ({}) =>{
+const ReleaseDetail = ({}) =>{
     
     let imgs = [700,701,702,703,704,705].map((v,i)=>`https://picsum.photos/${v.toString()}`);
     let [image,setImage] = useState<string>(imgs[0]);
@@ -123,4 +103,4 @@ const CollectionDetail = ({}) =>{
 }
 
 
-export default memo(CollectionDetail);
+export default memo(ReleaseDetail);

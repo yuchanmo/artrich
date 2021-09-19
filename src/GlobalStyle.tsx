@@ -1,8 +1,60 @@
 import {StyleSheet} from 'react-native';
 
-export const SampleFlatListStyles = {
+export const CardFlatListStyles = StyleSheet.create({
+    cardContainer:{
+        height:210,
+        width:'100%',
+        marginBottom:1
+    },
+    cardImageStyle:{
+        width:'100%',
+        height:150,
+    }
+});
+
+export const SampleImageBackGoundListStyles = StyleSheet.create({
+    imageBackGround:{
+        flex: 1,
+        height:200,
+        width:'100%',
+        padding:5,
+        borderRadius:20,
+        justifyContent:'flex-end',
+        
+    },
+    BackgroundImageStyle:{
+        borderRadius:10,
+    },
+    bottomRectFiller:{
+        flex: 1
+    },
+    bottomRect:{
+        height:80
+        //height: 27,
+        // backgroundColor: "rgba(21,19,19,0.5)",
+        //justifyContent: "flex-end",
+        // alignItems:'flex-end',
+        // alignContent:'flex-end'
+    },
+    bottomText:{
+        color: "rgba(247,252,253,1)",
+        fontSize: 14,
+        marginLeft : 20
+    }
+});
+
+export const commonStyle = StyleSheet.create({
+    titleText:{
+        alignSelf :'flex-start',
+        fontSize:20,
+        marginLeft:20
+    }
+})
+
+
+export const SampleFlatListStyles = StyleSheet.create({
         sampleFlatListContainer:{
-            marginTop:10
+            marginTop:20
         },
         sampleFlatListTitleContainer:{
             height:40,
@@ -11,21 +63,23 @@ export const SampleFlatListStyles = {
         sampleFlatListTitleText:{
             alignSelf :'flex-start',
             fontSize:20,
+            marginLeft:20
             
         },
         sampleFlatListMoreButtonText:{
-            marginLeft:180,
-            marginBottom:10
+            position:'absolute',
+            right:10,
+            height:50,
+            fontSize:5
              
         },
         sampleFlatListItemCotainer:{            
             margin:3,
-            borderWidth:0.25,
-            borderColor:'gray'
+           
         },        
         sampleFlatListItemButton: {
             width: 150,
-            height: 260,
+            height: 270,
             borderRadius: 5,
             overflow: "hidden"
           },
@@ -38,7 +92,7 @@ export const SampleFlatListStyles = {
             borderRadius:10
         },
         sampleFlatListItemDescriptionContainer:{           
-            height: 27,
+            height: 100,
             
             justifyContent: "center"            
         },
@@ -51,6 +105,6 @@ export const SampleFlatListStyles = {
             height:100,
 
         }
-    };
+    });
 
 

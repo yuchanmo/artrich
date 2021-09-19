@@ -32,5 +32,12 @@ type ArtistStackParamList = {
     ArtistDetail:undefined;
     Favorite:undefined;
     Analysis:undefined;
+    EasyPick:undefined;
 };
+
+type ReleaseStackParamList = {
+    TabRoot: undefined;
+    ReleaseDetail: undefined;
+    ReleaseList: undefined;
+  };
 

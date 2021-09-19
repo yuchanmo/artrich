@@ -11,11 +11,11 @@ const styles = StyleSheet.create(
     })
 );
 
-const Analysis = ({}) =>{
+const EasyPick = ({}) =>{
     return (
         <>
         <View>
-            <Text>artist</Text>
+            <Text>EasyPick</Text>
         </View>
         </>
         
@@ -23,4 +23,4 @@ const Analysis = ({}) =>{
 }
 
 
-export default Analysis ;
+export default EasyPick;

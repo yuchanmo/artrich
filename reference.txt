@@ -1,2 +1,11 @@
 1. chart library list
-https://morioh.com/p/7405fc6a1418
+https://morioh.com/p/7405
+
+2. Line chart
+https://react-native-responsive-linechart.surge.sh/docs/
+
+3. vector-icon 동작 안하는거 해결
+https://www.codegrepper.com/code-examples/javascript/react+native+icon+not+showing
+
+4. lottie animation
+https://stackoverflow.com/questions/55339044/how-to-have-a-heart-beat-animation-with-react-native

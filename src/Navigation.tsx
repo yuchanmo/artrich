@@ -12,6 +12,8 @@ import { RegisterScreen } from '~/screens/sign';
 import { ForgotPasswordScreen } from '~/screens/sign';
 import { HomeScreen } from '~/screens/sign';
 
+import {BottomNavigation} from 'react-native-paper';
+
 import Artist from '~/screens/main/Artist';
 import Community from '~/screens/main/Community';
 import My from '~/screens/main/My';
@@ -35,6 +37,41 @@ const StackSign = ()=>{
     </>
   )
 }
+
+// const TabMain = () => {
+//   // <MainTab.Screen name="Artist" component={Artist} />
+//   //       <MainTab.Screen name="Release" component={Release} />  
+//   //       <MainTab.Screen name="Community" component={Community} />        
+//   //       <MainTab.Screen name="Shop" component={Shop} />     
+//   //       <MainTab.Screen name="My" component={My} />     
+
+//   const [index, setIndex] = React.useState(0);
+//   const [routes] = React.useState([
+//     { key: 'artist', title: 'Artist', icon: 'queue-music' },
+//     { key: 'release', title: 'Release', icon: 'queue-music' },
+//     { key: 'community', title: 'Community', icon: 'queue-music' },
+//     { key: 'shop', title: 'Shop', icon: 'queue-music' },
+//     { key: 'my', title: 'My', icon: 'queue-music' },
+
+//   ]);
+
+//   const renderScene = BottomNavigation.SceneMap({
+//     artist: Artist,
+//     release: Release,
+//     community: Community,
+//     shop: Shop,
+//     my: My,
+  
+//   });
+
+//   return (
+//     <BottomNavigation
+//       navigationState={{ index, routes }}
+//       onIndexChange={setIndex}
+//       renderScene={renderScene}
+//     />
+//   );
+// };
 
 //Program Main
 const TabMain = ()=>{

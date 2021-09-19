@@ -4,6 +4,7 @@ import React,{memo,useState,useEffect, useLayoutEffect} from 'react';
 import { Text, View,StyleSheet, FlatList,Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { Button, Divider, Paragraph, Title } from 'react-native-paper';
 import {SampleFlatListStyles} from '~/GlobalStyle';
+import { getRandomInt } from '~/utils/random';
 
 const styles = StyleSheet.create(
     ({
@@ -20,7 +21,7 @@ type Props = {
     navigation:NativeStackScreenProps<ArtistStackParamList,"CollectionSampleList">;    
 };
 
-const CollectionItem = ({navigation,route}:Props)=>{
+const CollectionItem = ({navigation,route,img}:Props)=>{
     return (
         <View style={styles.sampleFlatListItemCotainer}>
         <TouchableOpacity style={styles.sampleFlatListItemButton} onPress={()=>navigation.navigate('CollectionDetail')}>
@@ -31,7 +32,7 @@ const CollectionItem = ({navigation,route}:Props)=>{
                 imageStyle={styles.image_imageStyle}
               > */}
               <ImageBackground
-                source={require('./mun.png')}
+                source={{uri:img}}
                 resizeMode="cover"
                 style={styles.sampleFlatListItemImage}
                 imageStyle={styles.sampleFlatListItemImageStyle}
@@ -54,7 +55,10 @@ const CollectionItem = ({navigation,route}:Props)=>{
 
 
 const CollectionSampleList = ({route,navigation}:Props) =>{
+
     let data = [1,2,3,4,5,6];
+    let samples = data.map((v,i)=>`https://picsum.photos/${getRandomInt(700,800).toString()}`); 
+    console.log(samples);
     return (
         <>
         <View style={styles.sampleFlatListContainer}>
@@ -64,8 +68,8 @@ const CollectionSampleList = ({route,navigation}:Props) =>{
             </View>
             <FlatList
                         horizontal={true}
-                        data={data}
-                        renderItem={({index,item})=><><CollectionItem  navigation={navigation} route={route}></CollectionItem></>}
+                        data={samples}
+                        renderItem={({index,item})=><><CollectionItem img={item}  navigation={navigation} route={route}></CollectionItem></>}
                         keyExtractor={(item,i) =>  i.toString()}
                     />
             <Divider color='black' orientation="horizontal"></Divider>

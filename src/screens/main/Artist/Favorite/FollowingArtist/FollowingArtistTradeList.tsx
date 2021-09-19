@@ -4,6 +4,7 @@ import React,{memo,useState,useEffect, useLayoutEffect} from 'react';
 import { Text, View,StyleSheet, FlatList, Touchable, Alert,TouchableOpacity, ImageBackground } from 'react-native';
 import { Avatar, Button, Card, Divider, Paragraph, Title } from 'react-native-paper';
 import {CardFlatListStyles,SampleFlatListStyles,SampleImageBackGoundListStyles} from '~/GlobalStyle';
+import { getRandomInt } from '~/utils/random';
 
 const styles = StyleSheet.create(
     ({
@@ -31,13 +32,13 @@ type Props = {
     navigation:NativeStackScreenProps<ArtistStackParamList,"ArtistTabRoot">;    
 };
 
-const CollectionItem = ({navigation,route}:Props)=>{
+const CollectionItem = ({navigation,route,img}:Props)=>{
     return (
         <>
         
             <TouchableOpacity style={styles.cardContainer} onPress={()=>Alert.alert('info','info')}>
             <ImageBackground
-                source={require('./mun.png')}
+                source={{uri:img}}
                 resizeMode="cover"
                 style={styles.imageBackGround}
                 imageStyle={styles.BackgroundImageStyle}
@@ -59,7 +60,20 @@ const CollectionItem = ({navigation,route}:Props)=>{
 
 
 const FollowingArtistTradeList = ({route,navigation}:Props) =>{
+    let generateSample = (nums)=>{
+        return nums.map((v,i)=>`https://picsum.photos/${getRandomInt(400,600).toString()}`); 
+    };
+
     let data = [1,2,3];
+    let tmp = generateSample(data); 
+    const [samples,setSamples] = useState<string[]>(tmp);
+    
+        
+    let showMore = ()=>{
+        let s = generateSample([1,2,3]);
+        setSamples((old)=>[...old,...s]);
+
+    };
     return (
         <>
         <View style={styles.sampleFlatListContainer}>
@@ -68,11 +82,11 @@ const FollowingArtistTradeList = ({route,navigation}:Props) =>{
                 {/* <Button style={styles.sampleFlatListMoreButtonText} onPress={()=>navigation.navigate('FollowingArtistAllList')}>전체보기</Button> */}
             </View>
             <FlatList                    
-                data={data}
-                renderItem={({index,item})=><><CollectionItem  navigation={navigation} route={route}></CollectionItem></>}
+                data={samples}
+                renderItem={({index,item})=><><CollectionItem img={item} navigation={navigation} route={route}></CollectionItem></>}
                 keyExtractor={(item,i) =>  i.toString()}
             />
-            <Button onPress={()=>Alert.alert('info','more')}>MORE</Button>
+            <Button onPress={showMore}>MORE</Button>
             <Divider color='black' orientation="horizontal"></Divider>
         </View>       
         </>

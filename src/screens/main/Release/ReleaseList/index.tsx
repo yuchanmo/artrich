@@ -2,9 +2,10 @@ import { RouteProp } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React,{useState,useEffect, useLayoutEffect} from 'react';
 import { Text, View,StyleSheet, FlatList, Alert, TouchableOpacity, ImageBackground } from 'react-native';
-import { Divider } from 'react-native-paper';
+import { Button, Divider } from 'react-native-paper';
 import CountDown from 'react-native-countdown-component';
 import RNFetchBlob from 'rn-fetch-blob';
+import { getRandomInt } from '~/utils/random';
 
 
 const styles = StyleSheet.create(({
@@ -74,10 +75,12 @@ interface Props{
 }
 
 
-const ReleaseThumnail = ({route,navigation}:Props) =>{
-    let timeNumber:number = 100;
+const ReleaseThumnail = ({route,navigation,img,t}:Props) =>{
+    let timeNumber:number = getRandomInt(400,1000)*1000;
+    
       useEffect(()=>{
-        timeNumber = (Math.floor(Math.random() * 1001));
+        timeNumber =  getRandomInt(400,1000)*1000;
+    
       },[]);
     
     return (
@@ -90,7 +93,7 @@ const ReleaseThumnail = ({route,navigation}:Props) =>{
         <TouchableOpacity style={styles.button2} onPress={()=>navigation.navigate('ReleaseDetail')}>       
             
             <ImageBackground
-                source={require('./mun.png')}
+                source={{uri:img}}
                 resizeMode="cover"
                 style={styles.image}
                 imageStyle={styles.image_imageStyle}
@@ -115,7 +118,14 @@ const ReleaseThumnail = ({route,navigation}:Props) =>{
 
 const ReleaseList = ({route,navigation}:Props) =>{
     //const [data,setData] = useState<Array<ArtDisplayInfo>>([]);
-    const data = [1,2,3,4,5,6];
+    let generateSample = (nums)=>{
+      return nums.map((v,i)=>`https://picsum.photos/${getRandomInt(0,600).toString()}`); 
+    };
+
+    let data = [1,2,3];
+    let tmp = generateSample(data); 
+    const [samples,setSamples] = useState<string[]>(tmp);
+  
     const initData = async () =>{
         // try {
         //     let res = await RNFetchBlob.fetch('GET', 'http://20.85.245.228:9999/collection');
@@ -139,13 +149,18 @@ const ReleaseList = ({route,navigation}:Props) =>{
 
     },[]);
 
+    let showMore = ()=>{
+      let s = generateSample([1,2,3]);
+      setSamples((old)=>[...old,...s]);
+
+  };
     return (
     <>    
       <View style={styles.releaseContainer}>
            
             <FlatList                   
-                    data={data}
-                    renderItem={({index,item})=><><ReleaseThumnail route={route} navigation={navigation}></ReleaseThumnail></>}
+                    data={samples}
+                    renderItem={({index,item})=><><ReleaseThumnail t={index*100} img={item} route={route} navigation={navigation}></ReleaseThumnail></>}
                     keyExtractor={(item,i) => i.toString()}
                 />
              {/* <FlatList                   
@@ -153,6 +168,7 @@ const ReleaseList = ({route,navigation}:Props) =>{
                     renderItem={({index,item})=><><Text>SSFSDG</Text></>}
                     keyExtractor={(item,i) => item.title_eng + i.toString()}
                 /> */}
+              <Button onPress={showMore}>MORE</Button>
             <Divider color='red' orientation="horizontal"></Divider>
         </View>
     </>

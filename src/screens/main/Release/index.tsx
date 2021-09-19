@@ -79,8 +79,8 @@ const TabRoot = ()=>{
             </View>
             <View style={styles.tabScreenContainer}>
             <Tab.Navigator>
-                <Tab.Screen name="Upcoming" component={ReleaseList} />
-                <Tab.Screen name="Past" component={ReleaseList} />                
+                <Tab.Screen name="Upcoming" component={ReleaseList} options={{swipeEnabled:false}}/>
+                <Tab.Screen name="Past" component={ReleaseList} options={{swipeEnabled:false}}/>                
             </Tab.Navigator>
             </View>
         </View>

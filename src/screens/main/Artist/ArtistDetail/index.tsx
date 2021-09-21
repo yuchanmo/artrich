@@ -22,6 +22,10 @@ const styles = StyleSheet.create(
         artistInfoContainer:{
             flex:1
         },
+        artistFollowingText:{
+            alignSelf:'center',
+            alignItems:'center',
+        }
 
     })
 );
@@ -50,7 +54,7 @@ const ArtistDetail = ({}) =>{
             <View style={styles.artistTitleContainer}>
                 <Title>작가이름</Title>
                 
-                <Text>Following</Text>
+                <Text style={styles.artistFollowingText}>Following</Text>
             </View>
             <View style={styles.artistInfoContainer}>
                 <ArtistDetailTabRoot></ArtistDetailTabRoot>

@@ -3,6 +3,7 @@ type LoginStackParamList = {
     RegisterScreen:undefined;
     ForgotPasswordScreen:undefined;
     HomeScreen:undefined;
+    StartPage:undefined;
 };
 
 type MainTabParamList = {
@@ -30,6 +31,8 @@ type ArtistStackParamList = {
     CollectionSampleList:undefined;
     CollectionDetail:undefined;
     ArtistDetail:undefined;
+    ArtList:undefined;
+    ArtDetail:undefined;
     Favorite:undefined;
     Analysis:undefined;
     EasyPick:undefined;

@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SignContext } from '~/context/SignContext';
 
-import { LoginScreen } from '~/screens/sign';
+import { LoginScreen, StartPage } from '~/screens/sign';
 import { RegisterScreen } from '~/screens/sign';
 import { ForgotPasswordScreen } from '~/screens/sign';
 import { HomeScreen } from '~/screens/sign';
@@ -29,6 +29,7 @@ const StackSign = ()=>{
   return (
     <>
     <SignStack.Navigator>
+    <SignStack.Screen name="StartPage" component={StartPage} options={{headerShown:false}}/>
       <SignStack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
       <SignStack.Screen name="RegisterScreen" component={RegisterScreen} options={{headerShown:false}}/>
       <SignStack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{headerShown:false}}/>
@@ -123,15 +124,15 @@ const Navigation = ()=> {
   return (
     <NavigationContainer>
       <RootStack.Navigator>
-      <RootStack.Screen name="TabMain" component={TabMain} options={{headerShown:false}}/>        
+      {/* <RootStack.Screen name="TabMain" component={TabMain} options={{headerShown:false}}/>         */}
       
-        {/* {
+        {
           !isSigned ?(       
             <RootStack.Screen name="StackSign" component={StackSign} options={{headerShown:false}}/>        
           ) : (        
             <RootStack.Screen name="TabMain" component={TabMain} options={{headerShown:false}}/>        
           )
-          }       */}
+          }      
       </RootStack.Navigator>
     </NavigationContainer>
   );

@@ -17,6 +17,8 @@ import CollectionDetail from './Favorite/CollectionDetail';
 import ArtistDetail from './ArtistDetail';
 import FollowingArtistAllList from './Favorite/FollowingArtist/FollowingArtistAllList';
 import EasyPick from './EasyPick';
+import ArtDetail from './ArtistDetail/ArtList/ArtDetail';
+import ArtList from './ArtistDetail/ArtList';
 
 
 const styles = StyleSheet.create(
@@ -94,6 +96,9 @@ const Artist = ({}) =>{
             <Stack.Screen name="SellList" component={SellList} />
             <Stack.Screen name="CollectionDetail" component={CollectionDetail} />
             <Stack.Screen name="ArtistDetail" component={ArtistDetail} />
+            <Stack.Screen name="ArtDetail" component={ArtDetail} />
+            <Stack.Screen name="ArtList" component={ArtList} />
+            
 
             {/* <Stack.Screen name="ArtistList" component={ArtistList} />
             <Stack.Screen name="ArtistDetail" component={ArtistDetail} />  */}

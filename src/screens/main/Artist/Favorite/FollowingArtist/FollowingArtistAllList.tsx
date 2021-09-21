@@ -41,8 +41,11 @@ const CollectionItem = ({navigation,route,img}:Props)=>{
             <TouchableOpacity onPress={()=>navigation.navigate('ArtistDetail')}>
                 <Card style={styles.collectionItemContainer}>
                     <Avatar.Image style={styles.avartarStyle} size={80} source={{uri:img}} />
+                    <Card.Content style={styles.nameTitle}>
+                    <Title >작가이름</Title>
+                    </Card.Content>
                 </Card>
-                <Title style={styles.nameTitle}>작가이름</Title>
+                
             </TouchableOpacity>
         </View>
         </>
@@ -75,7 +78,7 @@ const FollowingArtistAllList = ({route,navigation}:Props) =>{
         <View>
             <FlatList
                         refreshing={isFetching}
-                        onRefresh={showMore}
+                        onEndReached={showMore}
                         data={samples}
                         progressViewOffset={100}
                         renderItem={({index,item})=><><CollectionItem img={item} navigation={navigation} route={route}></CollectionItem></>}

@@ -33,7 +33,7 @@ const CollectionItem = ({navigation,route,img}:Props)=>{
               > */}
               <View style={{flexDirection:'column'}}>
                  <Avatar.Image size={60} source={{uri:img}} />
-                 <Text style={styles.sampleFlatListItemDescription}>작가작가작가</Text>
+                 <Text style={styles.sampleFlatListItemDescription}>작가</Text>
              </View>             
             </TouchableOpacity>
         </View>

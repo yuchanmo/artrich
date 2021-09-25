@@ -25,6 +25,8 @@ const styles = StyleSheet.create(
         artistFollowingText:{
             alignSelf:'center',
             alignItems:'center',
+            position:'absolute',
+            right:20
         }
 
     })

@@ -19,6 +19,7 @@ import FollowingArtistAllList from './Favorite/FollowingArtist/FollowingArtistAl
 import EasyPick from './EasyPick';
 import ArtDetail from './ArtistDetail/ArtList/ArtDetail';
 import ArtList from './ArtistDetail/ArtList';
+import ArtistList from './ArtistList';
 
 
 const styles = StyleSheet.create(
@@ -56,6 +57,17 @@ const Tab = createMaterialTopTabNavigator<ArtistStackParamList>();
 
 const ArtistTabRoot = ({route,navigation}:Props)=>{
     let [serachingName,setSearchingName] = useState<string>('');
+
+    const navigateArtistDetail = ()=>{
+        if(serachingName.length>0){
+            navigation.navigate('ArtistList',{'artist_name':serachingName})
+        }
+        else{
+            Alert.alert('Notice','검색할 작가 이름을 입력하세요')
+        }
+
+    }
+
     return (
         <>
         <View style={styles.searchbox}>
@@ -64,14 +76,8 @@ const ArtistTabRoot = ({route,navigation}:Props)=>{
                     placeholder="작가이름" 
                     value={serachingName} 
                     onChangeText={(v)=>setSearchingName(v)} 
-                    onIconPress={()=>{
-                        if(serachingName.length>0){
-                            navigation.navigate('ArtistDetail',{name:serachingName})
-                        }
-                        else{
-                            Alert.alert('Notice','검색할 작가 이름을 입력하세요')
-                        }
-                    }}          
+                    onSubmitEditing={()=>navigateArtistDetail()}
+                    onIconPress={()=>navigateArtistDetail()}          
                 ></Searchbar>
                 
             </View>
@@ -92,6 +98,7 @@ const Artist = ({}) =>{
         <Stack.Navigator>
             <Stack.Screen name="ArtistTabRoot" component={ArtistTabRoot} options={{headerShown:false}}/>
             <Stack.Screen name="FollowingArtistAllList" component={FollowingArtistAllList} />
+            <Stack.Screen name="ArtistList" component={ArtistList} />
             <Stack.Screen name="CollectionAllList" component={CollectionAllList} />
             <Stack.Screen name="SellList" component={SellList} />
             <Stack.Screen name="CollectionDetail" component={CollectionDetail} />

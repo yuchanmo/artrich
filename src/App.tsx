@@ -31,6 +31,7 @@
  import SplashScreen from 'react-native-splash-screen';
  
  import {SignContextProvider} from '~/context/SignContext';
+import { RequestCameraPermission } from './Permissons';
 
  
  const App: () => Node = () => {
@@ -48,7 +49,7 @@
      <SignContextProvider>
        <>
        <StatusBar hidden />
-       
+       {RequestCameraPermission}
        <Navigation></Navigation>
        </>
      </SignContextProvider>

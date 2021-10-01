@@ -22,8 +22,9 @@ type ArtistTabRootParamList = {
 type ArtistStackParamList = {
     ArtistTabRoot : undefined;
     FollowingArtist:undefined;
-    FollowingArtistAllList:undefined
+    FollowingArtistAllList:{user_id:number|undefined,artist_name:string|number}
     FollowingArtistSampleList:undefined;
+    ArtistList:{artist_name:string|number};
     AllList:undefined;    
     //CollectionList:undefined;
     SellList :undefined;
@@ -44,3 +45,16 @@ type ReleaseStackParamList = {
     ReleaseList: undefined;
   };
 
+
+type ShopStackParamList = {
+    ShopTabRoot:undefined;
+    Register:undefined;
+    SellList:undefined;
+    NewArtistList:undefined;
+    SellDetail:undefined;
+}
+
+type MyStackParamList = {
+    MyCollection:undefined;
+    
+}

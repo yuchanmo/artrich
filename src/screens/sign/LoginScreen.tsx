@@ -1,5 +1,5 @@
 import React, { memo, useContext, useState } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, Alert } from 'react-native';
 import Background from '~/components/Background';
 import Logo from '~/components/Logo';
 import Header from '~/components/Header';
@@ -31,7 +31,14 @@ const LoginScreen = ({ navigation }: Props) => {
       setPassword({ ...password, error: passwordError });
       return;
     }
-    trySignIn(1);
+    if(email['value']=='mojjijji@gmail.com'){
+      Alert.alert('info','2');
+      trySignIn(2);
+    }else{
+      Alert.alert('info','1');
+      trySignIn(1);
+    }
+    
     //navigation.navigate('Dashboard');
   };
 

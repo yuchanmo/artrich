@@ -7,7 +7,7 @@ import ImagePicker,{launchCamera,launchImageLibrary} from 'react-native-image-pi
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import RNFetchBlob from 'rn-fetch-blob';
-import ApiUrl from '~/GlobalContant';
+import ApiUrl from '~/GlobalConstant';
 import { SignContext } from '~/context/SignContext';
 import PhotoModal from '~/components/PhotoModal';
 
@@ -167,7 +167,22 @@ interface Action {
 
 const MyCollection = ({navigation,route}:Props) =>{   
     const {userId} = useContext<ISignContext>(SignContext);
-    const [state,dispatch] = useReducer(registerInfoReducer,{userid :userId,artistname:'',title:'',height:'',width:'',category:'',price:0,regdate:Date.now()});    
+    const [state,dispatch] = useReducer(registerInfoReducer,
+      {user_id :userId
+      ,artist_name:''
+      ,artist_id:0 
+      ,title_kor:''
+      ,title_eng:''
+      ,unit_cd:''
+      ,size_length:''
+      ,size_height:''
+      ,canvas:''
+      ,edition:''
+      ,image_name:''
+      ,buy_date:Date.now()
+      ,price:0
+      ,create_time:Date.now()
+    });    
     const [response, setResponse] = React.useState<any[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -331,26 +346,31 @@ const MyCollection = ({navigation,route}:Props) =>{
               />
 
               <Input
-              placeholder="작품명"               
-              onChangeText={value => dispatch({type:'title',value:value}) }
+              placeholder="작품명(한글)"               
+              onChangeText={value => dispatch({type:'title_kor',value:value}) }
+              />
+               <Input
+              placeholder="작품명(영어)"               
+              onChangeText={value => dispatch({type:'title_eng',value:value}) }
+              />
+              
+              <Input
+              placeholder="단위"               
+              onChangeText={value => dispatch({type:'unit_cd',value:value}) }
               />  
 
               <Input
               placeholder="세로크기" 
-              onChangeText={value => dispatch({type:'height',value:value}) }
+              onChangeText={value => dispatch({type:'size_height',value:value}) }
               />  
 
               <Input
               placeholder="가로크기"
               errorStyle={{ color: 'red' }}
-              onChangeText={value => dispatch({type:'width',value:value}) }
+              onChangeText={value => dispatch({type:'size_length',value:value}) }
               />  
 
-              <Input
-              placeholder="카테고리"
-              errorStyle={{ color: 'red' }}
-              onChangeText={value => dispatch({type:'category',value:value}) }
-              />  
+             
 
               <Input
               placeholder="소장금액"
@@ -361,7 +381,7 @@ const MyCollection = ({navigation,route}:Props) =>{
               <Input
               placeholder="소장일자"
               errorStyle={{ color: 'red' }}
-              onChangeText={value => dispatch({type:'regdate',value:value}) }
+              onChangeText={value => dispatch({type:'buy_date',value:value}) }
               />  
 
 

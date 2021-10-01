@@ -40,9 +40,9 @@ const ArtistDetailTabRoot = ()=>{
     
     return (                 
         <Tab.Navigator>
-            <Tab.Screen name="ChartAnalysis" component={ChartAnalysis} options={{swipeEnabled:false}} />
-            <Tab.Screen name="ArtList" component={ArtList} options={{swipeEnabled:false}}/>
-            <Tab.Screen name="CompareArtists" component={CompareArtists} options={{swipeEnabled:false}}/>                                
+            <Tab.Screen name="ChartAnalysis"  component={ChartAnalysis} options={{swipeEnabled:false,title:'차트'}} />
+            <Tab.Screen name="ArtList" component={ArtList} options={{swipeEnabled:false,title:'작품목록'}}/>
+            <Tab.Screen name="CompareArtists" component={CompareArtists} options={{swipeEnabled:false,title:'작가비교'}}/>                                
         </Tab.Navigator>
        
     );

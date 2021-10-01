@@ -2,7 +2,8 @@
 const BaseUrl = 'http://10.0.2.2:5000';
 const ApiUrl ={
     collection : `${BaseUrl}/collection`,
-    artist: `${BaseUrl}/collection`,
+    followingartists :  `${BaseUrl}/followingartists`,
+    artist: `${BaseUrl}/artists`,
     selling: `${BaseUrl}/selling`,
     releases: `${BaseUrl}/releases`,
     searchrank: `${BaseUrl}/searchrank`,

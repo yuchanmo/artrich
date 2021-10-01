@@ -5,7 +5,7 @@ interface Props{
 }
 
 const SignContext = createContext<ISignContext>({
-    userId: 0,
+    userId: 1,
     isSigned : false,
     trySignIn : (id:number):void =>{},
     trySignUp :():void => {},
@@ -13,7 +13,7 @@ const SignContext = createContext<ISignContext>({
 
 const SignContextProvider = ({children}:Props)=>{
     const [isSigned,setSignFlag] = useState<boolean>(false);
-    const [userId,setUserId] = useState<number>(0);
+    const [userId,setUserId] = useState<number>(1);
 
     const trySignIn = (id:number):void =>{
         setUserId(id);

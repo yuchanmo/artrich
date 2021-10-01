@@ -60,9 +60,14 @@ const RankChart = ()=>{
         <View>
             <Text style={styles.titleText}>순위차트</Text>
             <View style={{flexDirection:'row'}}>
-            {chart_keys.map((v,i)=>{
-                return <Button mode={'outlined'} onPress={()=>changeData(v)}>{v}</Button>
-            })}
+            <FlatList
+                 contentContainerStyle={{flexDirection : "row", flexWrap : "wrap"}}                
+                data={chart_keys}
+                renderItem={({index,item})=><Button mode={'outlined'} onPress={()=>changeData(item)}>{item}</Button>}
+                keyExtractor={(i) =>  i.toString()}
+            >
+            </FlatList>
+            
             </View>
             <Chart
             style={{ height: 200, width: 400 }}

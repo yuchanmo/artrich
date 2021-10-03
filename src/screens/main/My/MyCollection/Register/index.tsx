@@ -108,21 +108,13 @@ const styles = StyleSheet.create(
 
 const registerInfoReducer = (state,action)=>{
     //Alert.alert('info',`${action.type} - ${action.value}`);
+    Alert.alert('info',`${action.type.toString()}-${action.value.toString()}`)
     switch(action.type)
-    {
-        case 'images':
-            {
-                let tmp:string[] = state['images'];
-                tmp.push(action.value);
-                return {
-                    ...state,
-                    images:tmp
-                };
-            }
+    {        
         default:
             return {
                 ...state,
-                [action.name]:action.value
+                [action.type]:action.value
             };
     }    
 };
@@ -168,7 +160,8 @@ interface Action {
 const MyCollection = ({navigation,route}:Props) =>{   
     const {userId} = useContext<ISignContext>(SignContext);
     const [state,dispatch] = useReducer(registerInfoReducer,
-      {user_id :userId
+      {
+        user_id :userId
       ,artist_name:''
       ,artist_id:0 
       ,title_kor:''
@@ -200,56 +193,7 @@ const MyCollection = ({navigation,route}:Props) =>{
       }
       setModalVisible(false)
     }, []);
-
-    //사진 추가 모달 상자
-    // const PhotoModal = () => {  
-    //   return (
-        
-    //     <Modal
-    //       style={{justifyContent:'center',alignItems:'center',alignContent:'center'}}
-    //       animationType="slide"
-    //       transparent={true}
-    //       visible={modalVisible}
-    //       onRequestClose={() => {
-    //         Alert.alert("Modal has been closed.");
-    //         setModalVisible(!modalVisible);
-    //       }}
-    //     >
-    //       <View style={styles.centeredView}>
-    //         <View style={styles.modalView}>
-    //           <Text style={styles.modalText}>Hello World!</Text>
-    //           {actions.map(({title, type, options}) => {
-    //           return (
-    //             <TouchableOpacity
-    //             style={{...styles.buttonStyle,backgroundColor:'gray'}}                                                      
-    //             onPress={() => onButtonPress(type, options)}>
-    //               {/* <Text>{title}</Text> */}
-    //               <ListItem bottomDivider>
-    //               <Icon name={ 'av-timer'} />
-    //               <ListItem.Content>
-    //                 <ListItem.Title>{title}</ListItem.Title>
-    //                 <ListItem.Subtitle></ListItem.Subtitle>
-    //               </ListItem.Content>
-    //               <ListItem.Chevron />
-    //             </ListItem>
-          
-    //             </TouchableOpacity>
-    //           );
-    //         })}
-    //           <Pressable
-    //             style={[styles.button, styles.buttonClose]}
-    //             onPress={() => setModalVisible(!modalVisible)}
-    //           >
-    //             <Text style={styles.textStyle}>Hide Modal</Text>
-    //           </Pressable>
-    //         </View>
-    //       </View>
-    //     </Modal>        
-        
-    //   );
-    // };
-   
-
+ 
     const searchArtistIfExist = ()=>{
 
     };
@@ -269,12 +213,14 @@ const MyCollection = ({navigation,route}:Props) =>{
             }
           })
         }
+        Alert.alert('info',JSON.stringify(state));
 
         let res = await RNFetchBlob.fetch('POST', ApiUrl["mycollection"], {        
         'Content-Type' : 'multipart/form-data'},
         [
-          {name : 'info'
-          ,data : JSON.stringify(state)
+          {
+            name : 'info'          
+            ,data : JSON.stringify(state)
           },
           ...saved_image
         ]);
@@ -342,7 +288,7 @@ const MyCollection = ({navigation,route}:Props) =>{
                 
               <Input
               placeholder="작가이름"                
-              onChangeText={value => dispatch({type:'artistname',value:value}) }
+              onChangeText={value => dispatch({type:'artist_name',value:value}) }
               />
 
               <Input
@@ -371,6 +317,12 @@ const MyCollection = ({navigation,route}:Props) =>{
               />  
 
              
+              <Input
+              placeholder="가로크기"
+              errorStyle={{ color: 'red' }}
+              onChangeText={value => dispatch({type:'size_length',value:value}) }
+              />  
+
 
               <Input
               placeholder="소장금액"

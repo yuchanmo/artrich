@@ -8,6 +8,7 @@ import { SignContext } from '~/context/SignContext';
 import ApiUrl from '~/GlobalConstant';
 import {SampleFlatListStyles} from '~/GlobalStyle';
 import { ArtistListResult } from '~/models/ArtistList';
+import { ArtistStackParamList } from '~/models/NavigationParam';
 import { getRandomInt } from '~/utils/random';
 
 const styles = StyleSheet.create(
@@ -29,7 +30,7 @@ type Props = {
 const CollectionItem = ({navigation,route,item}:Props)=>{
     return (
         <View style={styles.followingArtistContainer}>
-        <TouchableOpacity style={styles.sampleFlatListItemButton} onPress={()=>navigation.navigate('ArtistDetail')}>
+        <TouchableOpacity style={styles.sampleFlatListItemButton} onPress={()=>navigation.navigate('ArtistDetail',{item:item})}>
               {/* <ImageBackground
                 source={ArtInfo.ImageUrl}
                 resizeMode="cover"

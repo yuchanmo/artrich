@@ -1,3 +1,5 @@
+import { ArtistListResult } from "./ArtistList";
+
 type LoginStackParamList = {
     LoginScreen:undefined;
     RegisterScreen:undefined;
@@ -31,9 +33,9 @@ type ArtistStackParamList = {
     CollectionAllList:undefined;
     CollectionSampleList:undefined;
     CollectionDetail:undefined;
-    ArtistDetail:undefined;
-    ArtList:undefined;
-    ArtDetail:undefined;
+    ArtistDetail:{item:ArtistListResult|undefined};
+    ArtList:{artist_id:number|undefined};
+    ArtDetail:{art_info_id:number|undefined};
     Favorite:undefined;
     Analysis:undefined;
     EasyPick:undefined;

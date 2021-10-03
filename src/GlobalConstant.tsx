@@ -11,7 +11,9 @@ const ApiUrl ={
     artistinfo: `${BaseUrl}/artistinfo`,
     arts:`${BaseUrl}/arts`,
     mycollection: `${BaseUrl}/mycollection`,
-
+    artistarts : `${BaseUrl}/artistarts`,
+    auctionart : `${BaseUrl}/auctionart`,
+    artistranking:`${BaseUrl}/artistranking`,
 };
 
 export default ApiUrl;

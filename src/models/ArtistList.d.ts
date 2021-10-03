@@ -9,4 +9,5 @@ export interface ArtistListResult {
     lot_no : number;
     image_name : string;
     image_url : string;    
+    turn_on : boolean;
 }

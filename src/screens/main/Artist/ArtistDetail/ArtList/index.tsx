@@ -10,7 +10,7 @@ import {
     TouchableOpacity
   } from 'react-native';
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  import React, {FC, ReactElement, useMemo, useState} from 'react';
+  import React, {FC, ReactElement, useEffect, useMemo, useState} from 'react';
   
   //import {Colors} from 'react-native/Libraries/NewAppScreen';
   import MasonryList from '@react-native-seoul/masonry-list';
@@ -18,23 +18,33 @@ import {
 import { RouteProp } from '@react-navigation/core';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { getRandomInt } from '~/utils/random';
+import ApiUrl from '~/GlobalConstant';
+import { ArtistArts } from '~/models/ArtistArts';
+import RNFetchBlob from 'rn-fetch-blob';
+import { ArtistStackParamList } from '~/models/NavigationParam';
+import { ArtistListResult } from '~/models/ArtistList';
   
 
 type Props = {
-    route : RouteProp<ArtistStackParamList,"ArtistTabRoot">
-    navigation:NativeStackScreenProps<ArtistStackParamList,"ArtistTabRoot">;    
+    route : RouteProp<ArtistStackParamList,"ArtistDetail">
+    navigation:NativeStackScreenProps<ArtistStackParamList,"ArtistDetail">;    
+    item:ArtistListResult;
 };
 
+type ThumnailProps = {
+  route : RouteProp<ArtistStackParamList,"ArtistDetail">
+  navigation:NativeStackScreenProps<ArtistStackParamList,"ArtistDetail">;    
+  item:ArtistArts;
+};
   
-  const ArtThumnail = ({item,navigation}) => {
+  const ArtThumnail = ({item,navigation,route}:ThumnailProps) => {
     const randomBool = useMemo(() => Math.random() < 0.5, []);
   
     return (
-      <TouchableOpacity onPress={()=>navigation.navigate('ArtDetail')} style={{marginTop: 1, flex: 1}}>   
-       <View key={item.id} >     
-       
+      <TouchableOpacity onPress={()=>navigation.navigate('ArtDetail',{art_info_id : item.art_info_id})} style={{marginTop: 1, flex: 1}}>   
+       <View key={item.art_info_id} >    
           <Image
-            source={{uri:item.imgURL}}
+            source={{uri:item.image_url}}
             style={{
               height: randomBool ? 150 : 280,
               alignSelf: 'stretch',
@@ -44,10 +54,10 @@ type Props = {
             }}
             resizeMode="cover"
           />
-          <Text> 추정가 </Text>
-          <Text> 가격 </Text>
-          <Text> 장소 </Text>
-          <Text> 정보 </Text>
+          <Text> {item.title_kor} </Text>
+          <Text> {item.title_eng} </Text>
+          <Text> {item.auction_site} </Text>
+          <Text> {item.auction_cate} </Text>
 
           <Text
             style={{
@@ -61,29 +71,39 @@ type Props = {
     );
   };
   
-  const ArtList: FC = ({navigation,route}:Props) => {
+  const ArtList = ({navigation,route,item}:Props) => {
+    const {artist_id} = item;
     const isDarkMode = useColorScheme() === 'dark';
-    let generateSample = (nums)=>{
-        return nums.map((v,i)=>{
-          return {
-          id : i,
-          imgURL : `https://picsum.photos/${getRandomInt(400,600).toString()}`,
-          text : 'HELLO'
-
-        };
-      }); 
-    };
-
-    let data = [...Array(50).keys()];
-    let tmp = generateSample(data); 
-    const [samples,setSamples] = useState<any[]>(tmp);
+   
     const [isFetching, setIsFetching] = useState(false);
 
-    console.log(samples);
+    const [arts,setArts] = useState<ArtistArts[]>([])
+    const getArts = async ()=>{
+        try {
+            let url = `${ApiUrl['artistarts']}?artistid=${artist_id}`;
+            let res = await RNFetchBlob.fetch('GET', url);
+            setArts(res.json());
+            console.log(res.json());
+            // console.log(res);
+            //     let status = res.info().status;
+            //     Alert.alert('res',status.toString());
+            //     if(status == 200){                              
+            //         //let tmp:Array<ArtDisplayInfo> = [...data, res.data];
+            //         setArtist(res.json());
+            //     }  
+        } catch (error) {
+            //Alert.alert('error',error.toString());
+        }
+        
+      };
+
+    useEffect(()=>{
+      getArts();
+    },[]);
     let showMore = ()=>{
         setIsFetching(true);
-        let s = generateSample([1,2,3]);
-        setSamples((old)=>[...old,...s]);
+        // let s = generateSample([1,2,3]);
+        // setSamples((old)=>[...old,...s]);
         setIsFetching(false);
 
     };
@@ -99,17 +119,16 @@ type Props = {
     // };
   
     return (
-      <View style={backgroundStyle}>
-        {/* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */}
+      <View style={backgroundStyle}>                
         <MasonryList
           contentContainerStyle={{
             paddingHorizontal: 10,
             alignSelf: 'stretch',
           }}          
           numColumns={2}
-          data={samples}
-          renderItem={({item})=> <><ArtThumnail item={item} navigation={navigation}></ArtThumnail></>}
-        />
+          data={arts}
+          renderItem={({item})=> <><ArtThumnail route={route} item={item} navigation={navigation}></ArtThumnail></>}
+        />     
       </View>
     );
   };

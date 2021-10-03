@@ -9,6 +9,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { SignContext } from '~/context/SignContext';
 import ApiUrl from '~/GlobalConstant';
 import { ArtistListResult } from '~/models/ArtistList';
+import { ArtistStackParamList } from '~/models/NavigationParam';
 import { getRandomInt } from '~/utils/random';
 
 const styles = StyleSheet.create(
@@ -17,7 +18,7 @@ const styles = StyleSheet.create(
             flex:1
         },       
         collectionItemContainer:{
-            flexDirection:'row',
+            flexDirection:'column',
             height:100,
             margin:5
         },
@@ -28,10 +29,15 @@ const styles = StyleSheet.create(
         },
         nameTitle:{
             position:'absolute',
-            right:10,
+            left:150,
             top : 20,
             color:'black'
         },
+        heartStyle:{
+            position:'absolute',
+            right:30,
+            top : 30,
+        }
         
     })
 );
@@ -40,20 +46,46 @@ type Props = {
     route : RouteProp<ArtistStackParamList,"ArtistList">
     navigation:NativeStackScreenProps<ArtistStackParamList,"ArtistList">;   
     item : ArtistListResult; 
+    userId:number;
 };
 
-const CollectionItem = ({navigation,route,item}:Props)=>{
+const CollectionItem = ({navigation,route,item,userId}:Props)=>{
+    const [turnOn,setTurnOn] = useState<boolean>(item.turn_on);
+
+    const updateFollowingStatus = async () =>{
+        let res = await RNFetchBlob.fetch('POST', ApiUrl["followingartists"],
+        { 'Content-Type': 'application/json'},
+        JSON.stringify({userid: userId,artistid:item.artist_id,turnon:turnOn})
+         );
+         Alert.alert('result', res.json()['turn_on'].toString());
+    };
+
+    const toggleHeart = async ()=>{
+        updateFollowingStatus();
+        setTurnOn(!turnOn);
+    };
+
     return (
         <>
         <View >
-            <TouchableOpacity onPress={()=>navigation.navigate('ArtistDetail')}>
+            <TouchableOpacity onPress={()=>navigation.navigate('ArtistDetail',{item:item})}>
                 <Card style={styles.collectionItemContainer}>
                     <Avatar.Image style={styles.avartarStyle} size={80} source={{uri:item.image_url}} />
-                    <Card.Content style={styles.nameTitle}>
-                    <Title >{item.artist_name_kor}</Title>
-                    <Paragraph >{item.artist_name_eng}</Paragraph>
-                    <Ionicons name={'heart'} size={20} color={'red'} />
-                    </Card.Content>
+                    <View style={styles.nameTitle}>
+                    
+                        <Title >{item.artist_name_kor}</Title>
+                        <Paragraph >{item.artist_name_eng}</Paragraph>
+                    
+                    </View>
+                    <View style={styles.heartStyle}>
+                    <TouchableOpacity onPress={toggleHeart}>
+                        {
+                            turnOn == true 
+                            ? <Ionicons name={'heart'} size={30} color={'red'} />
+                            : <Ionicons name={'heart'} size={30} color={'gray'} />
+                        }
+                    </TouchableOpacity>
+                   </View>
                 </Card>
                 
             </TouchableOpacity>
@@ -94,7 +126,11 @@ const ArtistList = ({route,navigation}:Props) =>{
         getArtist();
     },[]);
 
-
+    useLayoutEffect(()=>{
+        navigation.setOptions({
+          headerTitle:"작가 검색 결과"
+        });
+      }, [navigation]);
 
         
     let showMore = ()=>{
@@ -112,7 +148,7 @@ const ArtistList = ({route,navigation}:Props) =>{
                         onEndReached={showMore}
                         data={artist}
                         progressViewOffset={100}
-                        renderItem={({index,item})=><><CollectionItem item={item} navigation={navigation} route={route}></CollectionItem></>}
+                        renderItem={({index,item})=><><CollectionItem userId={userId} item={item} navigation={navigation} route={route}></CollectionItem></>}
                         keyExtractor={(item,i) =>  i.toString()}
                     />
             <Divider color='black' orientation="horizontal"></Divider>

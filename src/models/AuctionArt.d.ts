@@ -1,4 +1,4 @@
-export interface AuctionArtDetail{
+export interface AuctionArtInfo{
     lot_no : number;
     make_year : string;
     title_eng : string;
@@ -19,3 +19,16 @@ export interface AuctionArtDetail{
     auction_cate : string;
     auction_date : Date;
     auction_site : string;
+    image_url:string;
+    artwork_type:string;
+}
+
+export interface AuctionArtHistory{
+    money:number;
+    auction_date:Date;
+}
+
+export interface AuctionArt{
+    auction_art_info:AuctionArtInfo;
+    auction_art_history :AuctionArtHistory[]
+}

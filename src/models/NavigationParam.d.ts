@@ -33,9 +33,10 @@ type ArtistStackParamList = {
     CollectionAllList:undefined;
     CollectionSampleList:undefined;
     CollectionDetail:undefined;
-    ArtistDetail:{item:ArtistListResult|undefined};
+    ArtistDetail:{artist_id:number|undefined};
     ArtList:{artist_id:number|undefined};
     ArtDetail:{art_info_id:number|undefined};
+    AuctionArtDetail:{art_info_id:number|undefined};
     Favorite:undefined;
     Analysis:undefined;
     EasyPick:undefined;

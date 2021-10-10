@@ -30,7 +30,7 @@ type Props = {
 const CollectionItem = ({navigation,route,item}:Props)=>{
     return (
         <View style={styles.followingArtistContainer}>
-        <TouchableOpacity style={styles.sampleFlatListItemButton} onPress={()=>navigation.navigate('ArtistDetail',{item:item})}>
+        <TouchableOpacity style={styles.sampleFlatListItemButton} onPress={()=>navigation.navigate('ArtistDetail',{artist_id:item.artist_id})}>
               {/* <ImageBackground
                 source={ArtInfo.ImageUrl}
                 resizeMode="cover"

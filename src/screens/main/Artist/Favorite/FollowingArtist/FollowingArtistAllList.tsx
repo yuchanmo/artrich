@@ -4,6 +4,7 @@ import React,{memo,useState,useEffect, useLayoutEffect} from 'react';
 import { Text, View,StyleSheet, FlatList, Touchable, Alert,TouchableOpacity } from 'react-native';
 
 import { Avatar, Card, Divider, Title } from 'react-native-paper';
+import { ArtistStackParamList } from '~/models/NavigationParam';
 import { getRandomInt } from '~/utils/random';
 
 const styles = StyleSheet.create(

@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/core';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React,{memo,useState,useEffect, useLayoutEffect} from 'react';
-import { Text, View,StyleSheet, FlatList, Touchable, Alert,TouchableOpacity } from 'react-native';
+import { Text, View,StyleSheet, FlatList, Touchable, Alert,TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import { Avatar, Card, Divider, Paragraph, Title } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -29,7 +29,7 @@ const styles = StyleSheet.create(
         },
         nameTitle:{
             position:'absolute',
-            left:150,
+            left:100,
             top : 20,
             color:'black'
         },
@@ -68,7 +68,7 @@ const CollectionItem = ({navigation,route,item,userId}:Props)=>{
     return (
         <>
         <View >
-            <TouchableOpacity onPress={()=>navigation.navigate('ArtistDetail',{item:item})}>
+            <TouchableOpacity onPress={()=>navigation.navigate('ArtistDetail',{artist_id:item.artist_id})}>
                 <Card style={styles.collectionItemContainer}>
                     <Avatar.Image style={styles.avartarStyle} size={80} source={{uri:item.image_url}} />
                     <View style={styles.nameTitle}>
@@ -102,13 +102,17 @@ const ArtistList = ({route,navigation}:Props) =>{
     let {artist_name} = route.params;
     const [artist,setArtist] = useState<ArtistListResult[]>()
     const [isFetching, setIsFetching] = useState(false);
+    const [isLoading,setIsLoading] = useState<boolean>(false);
 
-    
     const getArtist = async ()=>{
-        try {
-            let url = artist_name==='following' ? `${ApiUrl['followingartists']}?userid=${userId}&sample=False`:  `${ApiUrl['artist']}?artistname=${artist_name}`;
-            let res = await RNFetchBlob.fetch('GET', url);
+        try {            
+            setIsLoading(true);
+            let url = artist_name==='following' ? `${ApiUrl['followingartists']}?userid=${userId}&sample=False`:  `${ApiUrl['artist']}?artistname=${artist_name}&userid=${userId}`;            
+            //Alert.alert('info',url);
+            let res = await RNFetchBlob.fetch('GET', url);            
             setArtist(res.json());
+            setIsLoading(false);
+            //Alert.alert('info',res[0].artist_id.toString());
             // console.log(res);
             //     let status = res.info().status;
             //     Alert.alert('res',status.toString());
@@ -125,6 +129,10 @@ const ArtistList = ({route,navigation}:Props) =>{
     useEffect(()=>{
         getArtist();
     },[]);
+
+    useEffect(()=>{
+        getArtist();
+    },[artist_name]);
 
     useLayoutEffect(()=>{
         navigation.setOptions({
@@ -143,6 +151,7 @@ const ArtistList = ({route,navigation}:Props) =>{
     return (
         <>
         <View>
+        {isLoading &&<ActivityIndicator size="large" color="#00ff00" />}
             <FlatList
                         refreshing={isFetching}
                         onEndReached={showMore}

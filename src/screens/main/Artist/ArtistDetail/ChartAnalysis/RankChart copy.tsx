@@ -1,7 +1,6 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React,{useState,useEffect, useLayoutEffect,memo} from 'react';
-import { Text, View,StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+import { Text, View,StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis } from 'react-native-responsive-linechart';
@@ -57,6 +56,8 @@ const RankChart = ()=>{
     let [filterKey,setFilterKey] = React.useState<string>('avg');
     let [tableData,setTableData] = React.useState<any[]>();
 
+
+
     let changeData = (k:string)=>{
         setChartData(datas[k]);
     };
@@ -74,63 +75,18 @@ const RankChart = ()=>{
             </FlatList>
             
             </View>
-            <View>
-            <LineChart
-                data={{
-                labels: ["January", "February", "March", "April", "May", "June"],
-                datasets: [
-                    {
-                    data: [
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100
-                    ],
-                    
-                    },
-                    {
-                        data: [
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100
-                        ],
-                        
-                        }
-                ]
-                }}
-                width={Dimensions.get("window").width} // from react-native
-                height={220}
-                yAxisLabel="$"
-                yAxisSuffix="k"
-                yAxisInterval={1} // optional, defaults to 1
-                chartConfig={{
-                backgroundColor: "#e26a00",
-                backgroundGradientFrom: "#fb8c00",
-                backgroundGradientTo: "#ffa726",
-                decimalPlaces: 2, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                    borderRadius: 16
-                },
-                propsForDots: {
-                    r: "6",
-                    strokeWidth: "2",
-                    stroke: "#ffa726"
-                }
-                }}
-                bezier
-                style={{
-                marginVertical: 8,
-                borderRadius: 16
-                }}
-            />
-            </View>
+            <Chart
+            style={{ height: 200, width: 400 }}
+            data={chartData}
+            padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
+            xDomain={{ min: 0, max: 20 }}
+            yDomain={{ min: 0, max: 20 }}
+            >
+            <VerticalAxis tickCount={11} theme={{ labels: { formatter: (v) => v.toFixed(2) } }} />
+            <HorizontalAxis tickCount={5} />
+            <Area theme={{ gradient: { from: { color: '#ffa502' }, to: { color: '#ffa502', opacity: 0.4 } }}} />
+            <Line theme={{ stroke: { color: '#ffa502', width: 5 }, scatter: { default: { width: 4, height: 4, rx: 2 }} }} />
+            </Chart>
         </View>
     )
 };

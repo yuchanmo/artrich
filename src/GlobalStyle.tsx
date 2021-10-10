@@ -37,7 +37,7 @@ export const SampleImageBackGoundListStyles = StyleSheet.create({
         // alignContent:'flex-end'
     },
     bottomText:{
-        color: "rgba(247,252,253,1)",
+        color: "black",
         fontSize: 14,
         marginLeft : 20
     }

@@ -1,5 +1,5 @@
 import React,{useState,useEffect, useLayoutEffect,memo} from 'react';
-import { Text, View,StyleSheet } from 'react-native';
+import { Text, View,StyleSheet, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Divider } from 'react-native-paper';
 import AnalysisTable from './AnalysisTable';
@@ -20,14 +20,20 @@ const styles = StyleSheet.create(
     })
 );
 
+interface Props{
+    artist_id:number;
+}
 
 
 
-const ChartAnalysis = ({}) =>{
+const ChartAnalysis = ({artist_id}:Props) =>{
+
+    // let a = artist_id?.toString()??"";
+    // Alert.alert('chart analysis',a.toString())
     return (
         <>
         <ScrollView>
-            <AnalysisTable></AnalysisTable>
+            <AnalysisTable artist_id={artist_id}></AnalysisTable>
             <Divider></Divider>
             <RankChart></RankChart>
             <Divider></Divider>

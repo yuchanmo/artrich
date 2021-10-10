@@ -1,5 +1,9 @@
 //const BaseUrl = 'http://localhost:5000';
 const BaseUrl = 'http://10.0.2.2:5000';
+//const BaseUrl = 'http://58.143.59.33:5555';
+//
+
+
 const ApiUrl ={
     collection : `${BaseUrl}/collection`,
     followingartists :  `${BaseUrl}/followingartists`,
@@ -14,6 +18,9 @@ const ApiUrl ={
     artistarts : `${BaseUrl}/artistarts`,
     auctionart : `${BaseUrl}/auctionart`,
     artistranking:`${BaseUrl}/artistranking`,
+    recentartistranking:`${BaseUrl}/recentartistranking`,
+    recentpopularartistranking:`${BaseUrl}/recentpopularartistranking`,
+    followingartistsauctionplan:`${BaseUrl}/followingartistsauctionplan`,
 };
 
 export default ApiUrl;

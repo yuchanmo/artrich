@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { memo } from 'react';
-import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, View,Dimensions } from 'react-native';
 import { Button, DataTable, Divider } from 'react-native-paper';
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis } from 'react-native-responsive-linechart';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -11,13 +11,28 @@ import { commonStyle } from '~/GlobalStyle';
 import { ArtistStackParamList } from '~/models/NavigationParam';
 import {AristRanking} from '~/models/ArtistRanking';
 import { ScrollView } from 'react-native-gesture-handler';
-const optionsPerPage = [2, 3, 4];
 
+
+const optionsPerPage = [2, 3, 4];
+const windowWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create(({
     ...commonStyle,
   container:{
       margin:7,
   },
+  filterBtn:{
+    width:windowWidth/3.3,
+    margin:1
+  },
+  selectedBtn:{
+    backgroundColor:'blue',
+  },
+  filterBtnContainer:{
+    alignContent:'space-between',
+    justifyContent:'space-between',
+    alignItems:'center'
+    
+  }
 //   titleText: {
 //       color: "black",
 //       fontSize: 20,        
@@ -25,33 +40,24 @@ const styles = StyleSheet.create(({
 }));
 
 interface Props{
-  Month:string;
-  route : RouteProp<ArtistStackParamList,"ArtistTabRoot">
+    route : RouteProp<ArtistStackParamList,"ArtistTabRoot">
   navigation:NativeStackScreenProps<ArtistStackParamList,"ArtistTabRoot">;    
 }
 
-const samples = [
-    {
-        name:'모유찬',
-        ratio:'35%',
-        avgprice:'1000',
-        perprice:'1200',
-        totalprice:'30000',
-        numofout:'35',
-        successratio:'77%'
-    },
-    {
-        name:'모유찬',
-        ratio:'35%',
-        avgprice:'1000',
-        perprice:'1200',
-        totalprice:'30000',
-        numofout:'35',
-        successratio:'77%'
-    },
-]
+interface ResultTableProps{
+  navigation:NativeStackScreenProps<ArtistStackParamList,"ArtistTabRoot">;    
+  data : any[];
+  rankType:string;
+}
 
-const ResultTable = ({data,rankType})=>{
+const ResultTable = ({data,rankType,navigation}:ResultTableProps)=>{
+  const [page, setPage] = React.useState<number>(0);
+  const [itemsPerPage, setItemsPerPage] = React.useState(optionsPerPage[0]);
+
+  React.useEffect(() => {
+    setPage(0);
+  }, [itemsPerPage]);
+
   switch(rankType){
     case 'count':
       return (   
@@ -64,7 +70,7 @@ const ResultTable = ({data,rankType})=>{
             </DataTable.Header>
     
             {(data !==undefined && data !==null) && data.map((v,i)=>(
-              <DataTable.Row key={i.toString()} onPress={()=>navigation.navigate('ArtistDetail')}>
+              <DataTable.Row key={i.toString()} onPress={()=>navigation.navigate('ArtistDetail',{artist_id:v.artist_id})}>
                 <DataTable.Cell>{v.artist_name_kor_born}</DataTable.Cell>
                 <DataTable.Cell>{v.count}</DataTable.Cell>          
                 <DataTable.Cell>{v.rank}</DataTable.Cell>          
@@ -80,25 +86,25 @@ const ResultTable = ({data,rankType})=>{
             <DataTable.Header>
               <DataTable.Title>작가</DataTable.Title>
               <DataTable.Title>상승률</DataTable.Title> 
-              <DataTable.Title>평균랭킹</DataTable.Title> 
+              {/* <DataTable.Title>평균랭킹</DataTable.Title> 
               <DataTable.Title>호당랭킹</DataTable.Title> 
               <DataTable.Title>최고랭킹</DataTable.Title> 
               <DataTable.Title>합랭킹</DataTable.Title> 
-              <DataTable.Title>갯수랭킹</DataTable.Title> 
+              <DataTable.Title>갯수랭킹</DataTable.Title>  */}
               <DataTable.Title>총합</DataTable.Title>          
               <DataTable.Title>총랭킹</DataTable.Title>          
                             
             </DataTable.Header>
     
             {(data !==undefined && data !==null) && data.map((v,i)=>(
-              <DataTable.Row key={i.toString()} onPress={()=>navigation.navigate('ArtistDetail')}>
+              <DataTable.Row key={i.toString()} onPress={()=>navigation.navigate('ArtistDetail',{artist_id:v.artist_id})}>
                 <DataTable.Cell>{v.artist_name_kor_born}</DataTable.Cell>
                 <DataTable.Cell>{v.increased_rate}</DataTable.Cell>          
-                <DataTable.Cell>{v.avg_rank}</DataTable.Cell>          
+                {/* <DataTable.Cell>{v.avg_rank}</DataTable.Cell>          
                 <DataTable.Cell>{v.canvas_avg_rank}</DataTable.Cell>        
                 <DataTable.Cell>{v.max_rank}</DataTable.Cell>        
                 <DataTable.Cell>{v.sum_rank}</DataTable.Cell>       
-                <DataTable.Cell>{v.count_rank}</DataTable.Cell>  
+                <DataTable.Cell>{v.count_rank}</DataTable.Cell>   */}
                 <DataTable.Cell>{v.total_sum}</DataTable.Cell>  
                 <DataTable.Cell>{v.total_rank}</DataTable.Cell>  
               </DataTable.Row>
@@ -111,21 +117,32 @@ const ResultTable = ({data,rankType})=>{
    
           <DataTable>
               <DataTable.Header>
-                <DataTable.Title>작가</DataTable.Title>
-                <DataTable.Title>금액</DataTable.Title>          
-                <DataTable.Title>랭킹</DataTable.Title>          
-                <DataTable.Title>상승률</DataTable.Title>               
+                <DataTable.Title style={{flex:3}}>작가</DataTable.Title>
+                <DataTable.Title style={{flex:3}}>금액</DataTable.Title>          
+                <DataTable.Title style={{flex:1}}>랭킹</DataTable.Title>          
+                <DataTable.Title style={{flex:2}}>상승률</DataTable.Title>               
               </DataTable.Header>
       
               {(data !==undefined && data !==null) && data.map((v,i)=>(
-                <DataTable.Row key={i.toString()} onPress={()=>navigation.navigate('ArtistDetail')}>
-                  <DataTable.Cell>{v.artist_name_kor_born}</DataTable.Cell>
-                  <DataTable.Cell>{v.money}</DataTable.Cell>          
-                  <DataTable.Cell>{v.rank}</DataTable.Cell>          
-                  <DataTable.Cell>{v.increased_rate}</DataTable.Cell>        
+                <DataTable.Row key={i.toString()} onPress={()=>navigation.navigate('ArtistDetail',{artist_id:v.artist_id})}>
+                  <DataTable.Cell style={{flex:3}}>{v.artist_name_kor_born}</DataTable.Cell>
+                  <DataTable.Cell style={{flex:3}}>{v.money}</DataTable.Cell>          
+                  <DataTable.Cell style={{flex:1}}>{v.rank}</DataTable.Cell>          
+                  <DataTable.Cell style={{flex:2}}>{v.increased_rate}</DataTable.Cell>        
                 </DataTable.Row>
-              ))}                
-            </DataTable>
+              ))}    
+              <DataTable.Pagination
+                page={page}
+                numberOfPages={3}
+                onPageChange={(page) => setPage(page)}
+                label="1-2 of 6"
+                optionsPerPage={optionsPerPage}
+                itemsPerPage={itemsPerPage}
+                setItemsPerPage={setItemsPerPage}
+                showFastPagination
+                optionsLabel={'Rows per page'}
+              />
+            </DataTable>          
       
         );
   }
@@ -135,20 +152,16 @@ const ResultTable = ({data,rankType})=>{
 
 
 const PopularArtistTable = ({route,navigation}:Props)  => {
-  // const [page, setPage] = React.useState<number>(0);
-  // const [itemsPerPage, setItemsPerPage] = React.useState(optionsPerPage[0]);
-  //const [data,setData] = React.useState<Array<FavoriteRank>>([]);
   const [data,setData] =React.useState<AristRanking>({avg:[],canvas:[],count:[],max:[],recent:[],sum:[],total:[]});
   const initData = async () =>{
     try {
         let res = await RNFetchBlob.fetch('GET', ApiUrl['artistranking']);      
-        //Alert.alert('info', JSON.stringify(res.json()))  
         let tmp = res.json();
         setData(tmp);            
         setTableData(tmp['avg'])    
     } catch (error) {
-        Alert.alert('info',error.message);
-        Alert.alert('info',error.stack);
+        // Alert.alert('info',error.message);
+        // Alert.alert('info',error.stack);
     }      
     
 
@@ -164,11 +177,11 @@ const PopularArtistTable = ({route,navigation}:Props)  => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.titleText}>작가랭킹</Text>
-      <View>
-        <FlatList
+      <View style={styles.filterBtnContainer}>
+        <FlatList                  
                   numColumns={3}             
                   data={Object.keys(filterButton)}
-                  renderItem={({index,item})=><Button mode={'outlined'} onPress={()=>{
+                  renderItem={({index,item})=><Button style={styles.filterBtn} mode={'outlined'} onPress={()=>{
                     setTableData(data[filterButton[item]]);
                     setFilterKey(filterButton[item]);
                   }}>{item}</Button>}
@@ -176,7 +189,7 @@ const PopularArtistTable = ({route,navigation}:Props)  => {
               >
               </FlatList>
       </View>
-      <ResultTable data={tableData} rankType={filterKey}></ResultTable>
+      <ResultTable data={tableData} rankType={filterKey} navigation={navigation}></ResultTable>
       {/* <DataTable>
         <DataTable.Header>
           <DataTable.Title>작가</DataTable.Title>

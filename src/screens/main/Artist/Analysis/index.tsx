@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React,{useState,useEffect, useLayoutEffect} from 'react';
 import { Text, View,StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ArtistStackParamList } from '~/models/NavigationParam';
 import PopularArtistTable from './PopularArtistTable';
 import SearchRankTable from './SearchRankTable';
 

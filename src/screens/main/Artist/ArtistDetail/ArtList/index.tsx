@@ -41,7 +41,7 @@ type ThumnailProps = {
     const randomBool = useMemo(() => Math.random() < 0.5, []);
   
     return (
-      <TouchableOpacity onPress={()=>navigation.navigate('ArtDetail',{art_info_id : item.art_info_id})} style={{marginTop: 1, flex: 1}}>   
+      <TouchableOpacity onPress={()=>navigation.navigate('AuctionArtDetail',{art_info_id : item.art_info_id})} style={{marginTop: 1, flex: 1}}>   
        <View key={item.art_info_id} >    
           <Image
             source={{uri:item.image_url}}
@@ -119,7 +119,9 @@ type ThumnailProps = {
     // };
   
     return (
-      <View style={backgroundStyle}>                
+      <View style={backgroundStyle}>    
+      {     
+      arts.length >0 &&       
         <MasonryList
           contentContainerStyle={{
             paddingHorizontal: 10,
@@ -129,6 +131,7 @@ type ThumnailProps = {
           data={arts}
           renderItem={({item})=> <><ArtThumnail route={route} item={item} navigation={navigation}></ArtThumnail></>}
         />     
+  }
       </View>
     );
   };

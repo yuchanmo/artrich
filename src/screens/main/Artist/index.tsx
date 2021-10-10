@@ -20,6 +20,8 @@ import EasyPick from './EasyPick';
 import ArtDetail from './ArtistDetail/ArtList/ArtDetail';
 import ArtList from './ArtistDetail/ArtList';
 import ArtistList from './ArtistList';
+import { ArtistStackParamList } from '~/models/NavigationParam';
+import AuctionArtDetail from './AuctionArtDetail';
 
 
 const styles = StyleSheet.create(
@@ -81,10 +83,10 @@ const ArtistTabRoot = ({route,navigation}:Props)=>{
                 ></Searchbar>
                 
             </View>
-            <Tab.Navigator>
+            <Tab.Navigator screenOptions={{lazy:true}}>
                 <Tab.Screen name="Favorite" component={Favorite} options={{swipeEnabled:false}} />
-                <Tab.Screen name="Analysis" component={Analysis} options={{swipeEnabled:false}}/>
-                <Tab.Screen name="EasyPick" component={EasyPick} options={{swipeEnabled:false}}/>
+                <Tab.Screen name="Analysis" component={Analysis}  options={{swipeEnabled:false}}/>
+                {/* <Tab.Screen name="EasyPick" component={EasyPick} options={{swipeEnabled:false}}/> */}
                 {/* <Tab.Screen name="EasyPick" component={EasyPick} options={{swipeEnabled:false}}/> */}
             </Tab.Navigator>
         </View>
@@ -104,6 +106,7 @@ const Artist = ({}) =>{
             <Stack.Screen name="CollectionDetail" component={CollectionDetail} />
             <Stack.Screen name="ArtistDetail" component={ArtistDetail} />
             <Stack.Screen name="ArtDetail" component={ArtDetail} />
+            <Stack.Screen name="AuctionArtDetail" component={AuctionArtDetail} />
             <Stack.Screen name="ArtList" component={ArtList} />
             
 

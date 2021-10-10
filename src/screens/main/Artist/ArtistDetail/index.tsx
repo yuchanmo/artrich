@@ -69,16 +69,23 @@ type TabProps ={
     item:ArtistListResult;
     route : RouteProp<ArtistStackParamList,"ArtistDetail">
     navigation:NativeStackScreenProps<ArtistStackParamList,"ArtistDetail">;    
-
+    artist_id : number;
 }
 
 const Tab = createMaterialTopTabNavigator<ArtistStackParamList>();
 
-const ArtistDetailTabRoot = ({item,navigation,route}:TabProps)=>{
-    
+const ArtistDetailTabRoot = ({item,navigation,route,artist_id}:TabProps)=>{
+    //Alert.alert('artist detail tab',artist_id.toString());
     return (                 
-        <Tab.Navigator>
-            <Tab.Screen name="ChartAnalysis"   component={ChartAnalysis}  options={{swipeEnabled:false,title:'차트'}} />
+        <Tab.Navigator screenOptions={{lazy:true}}>
+            {/* <Tab.Screen name="ChartAnalysis" initialParams={{ artist_id: artist_id }}   component={ChartAnalysis}  options={{swipeEnabled:false,title:'차트'}} /> */}
+            <Tab.Screen name="ChartAnalysis" children={()=>{
+                    return(
+                    <ChartAnalysis artist_id={artist_id}/>
+                    )
+                }} options={{swipeEnabled:false,title:'차트'}}/>
+
+
             <Tab.Screen name="ArtList" children={()=>{
                     return(
                     <ArtList item={item} navigation={navigation} route={route} />
@@ -94,7 +101,8 @@ type ArtistHeaderProps = {
 }
 
 const ArtistHeader = ({item}:ArtistHeaderProps)=>{
-    const [turnOn,setTurnOn] = useState<boolean>(item.turn_on);
+    let turn_on = (item!==null && item!==undefined) ? item.turn_on : false;
+    const [turnOn,setTurnOn] = useState<boolean>(turn_on);
     const {userId} = React.useContext<ISignContext>(SignContext);
     const updateFollowingStatus = async () =>{
         let res = await RNFetchBlob.fetch('POST', ApiUrl["followingartists"],
@@ -119,21 +127,52 @@ const ArtistHeader = ({item}:ArtistHeaderProps)=>{
             
             </View>
             <View style={styles.heartStyle}>
-            <TouchableOpacity onPress={toggleHeart}>
-                {
-                    turnOn == true 
-                    ? <Ionicons name={'heart'} size={30} color={'red'} />
-                    : <Ionicons name={'heart'} size={30} color={'gray'} />
-                }
-            </TouchableOpacity>
+            {
+                <TouchableOpacity onPress={toggleHeart}>
+                    {
+                        turnOn == true 
+                        ? <Ionicons name={'heart'} size={30} color={'red'} />
+                        : <Ionicons name={'heart'} size={30} color={'gray'} />
+                    }
+                </TouchableOpacity>
+            }
             </View>
         </Card>
     );
 }
 
+
+let init:ArtistListResult = {
+    art_info_id:1
+    ,artist_comment:''
+    ,artist_name_eng:''
+    ,auction_cate :''
+    ,artist_id : 1
+    ,artist_name_kor :''
+    ,auction_site :''
+    ,image_name:''
+    ,image_url:''
+    ,lot_no:1
+    ,turn_on:true
+};
+
 const ArtistDetail = ({route,navigation}:Props) =>{
-    const {item} = route.params;
+    const {userId} = React.useContext<ISignContext>(SignContext);
+    const {artist_id} = route.params;
     const [isClick, setClick] = useState<boolean>(false);
+    const [item,setItem] = useState<ArtistListResult>(init);
+    
+
+    const initData = async () =>{
+        let url = `${ApiUrl['artistinfo']}?artistid=${artist_id}&userid=${userId}`;
+        let res = await RNFetchBlob.fetch('GET', url);
+        setItem(res.json()[0]);
+    };
+
+    useEffect(()=>{
+        initData();
+    },[]);
+
 
     useLayoutEffect(()=>{
         navigation.setOptions({
@@ -152,7 +191,7 @@ const ArtistDetail = ({route,navigation}:Props) =>{
                 <Text style={styles.artistFollowingText}>Following</Text> */}
             </View>
             <View style={styles.artistInfoContainer}>
-                <ArtistDetailTabRoot item={item} navigation={navigation} route={route}></ArtistDetailTabRoot>
+                <ArtistDetailTabRoot artist_id={artist_id} item={item} navigation={navigation} route={route}></ArtistDetailTabRoot>
             </View>
         </View>
         </>

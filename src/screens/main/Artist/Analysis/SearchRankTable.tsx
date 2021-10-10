@@ -7,6 +7,8 @@ import { DataTable, Divider } from 'react-native-paper';
 import RNFetchBlob from 'rn-fetch-blob';
 import ApiUrl from '~/GlobalConstant';
 import { commonStyle } from '~/GlobalStyle';
+import { Ranking, TotalRanking } from '~/models/ArtistRanking';
+import { ArtistStackParamList } from '~/models/NavigationParam';
 const optionsPerPage = [2, 3, 4];
 
 const styles = StyleSheet.create(({
@@ -51,20 +53,20 @@ const samples = [
 const SearchRankTable = ({route,navigation}:Props) => {
   const [page, setPage] = React.useState<number>(0);
   const [itemsPerPage, setItemsPerPage] = React.useState(optionsPerPage[0]);
-  //const [data,setData] = React.useState<Array<FavoriteRank>>([]);
+  const [data,setData] = React.useState<Array<Ranking>>([]);
 
   const initData = async () =>{
-    // try {
-    //     let res = await RNFetchBlob.fetch('GET', ApiUrl['favoriterank']);
-    //     let status = res.info().status;
-    //     if(status == 200){                            
-    //         //let tmp:Array<ArtDisplayInfo> = [...data, res.data];
-    //         setData(res.json());
-    //     }        
-    // } catch (error) {
-    //     Alert.alert('info',error.message);
-    //     Alert.alert('info',error.stack);
-    // }      
+   
+    try {
+        let res = await RNFetchBlob.fetch('GET', `${ApiUrl['recentpopularartistranking']}`);
+                    
+            //let tmp:Array<ArtDisplayInfo> = [...data, res.data];
+          setData(res.json());
+        
+    } catch (error) {
+        Alert.alert('info',error.message);
+        Alert.alert('info',error.stack);
+    }      
     
 
 };
@@ -73,36 +75,23 @@ const SearchRankTable = ({route,navigation}:Props) => {
     initData();
   }, []);
 
-  React.useEffect(() => {
-    setPage(0);
-    initData();
-  }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>최근 인기작가 순위</Text>
+      <Text style={styles.titleText}>최근 1년 거래 순위</Text>
       <DataTable>
         <DataTable.Header>
+          <DataTable.Title>순위</DataTable.Title>
           <DataTable.Title>작가</DataTable.Title>
-          <DataTable.Title>상승율</DataTable.Title>          
-          <DataTable.Title>평균낙찰가</DataTable.Title>          
-          <DataTable.Title>호당낙찰가</DataTable.Title>
-          <DataTable.Title>총판매가</DataTable.Title>          
-          <DataTable.Title>출품수</DataTable.Title>          
-          <DataTable.Title>낙찰율</DataTable.Title>
-         
+          <DataTable.Title>거래수</DataTable.Title>        
 
         </DataTable.Header>
 
-        {samples.map((v,i)=>(
-          <DataTable.Row key={i.toString()} onPress={()=>navigation.navigate('ArtistDetail',{name:v.artist_name_kor})}>
-            <DataTable.Cell>{v.name}</DataTable.Cell>
-            <DataTable.Cell>{v.ratio}</DataTable.Cell>          
-            <DataTable.Cell>{v.avgprice}</DataTable.Cell>          
-            <DataTable.Cell>{v.perprice}</DataTable.Cell>          
-            <DataTable.Cell>{v.totalprice}</DataTable.Cell>          
-            <DataTable.Cell>{v.numofout}</DataTable.Cell>          
-            <DataTable.Cell>{v.successratio}</DataTable.Cell>          
+        {data.map((v,i)=>(
+          <DataTable.Row key={i.toString()} onPress={()=>navigation.navigate('ArtistDetail',{name:v.artist_id})}>
+            <DataTable.Cell>{v.rank}</DataTable.Cell>
+            <DataTable.Cell>{v.artist_name_kor_born}</DataTable.Cell>          
+            <DataTable.Cell>{v.money}</DataTable.Cell> 
           </DataTable.Row>
         ))}        
 

@@ -76,7 +76,7 @@ const CollectionItem = ({navigation,route,item}:CollectionItemProps)=>{
     return (
         <View style={styles.sampleFlatListItemCotainer}>
         <TouchableOpacity style={styles.sampleFlatListItemButton} onPress={()=>{
-            Alert.alert('no',item.art_info_id.toString());
+            // Alert.alert('no',item.art_info_id.toString());
             navigation.navigate('AuctionArtDetail',{art_info_id : item.art_info_id});
         }
             }>

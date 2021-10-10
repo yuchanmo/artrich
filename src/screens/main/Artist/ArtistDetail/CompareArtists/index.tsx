@@ -87,7 +87,7 @@ const CompareArtists = ({}) =>{
         <ScrollView>
             <Text>Condition</Text>
             <PlotTrendChart chartData={datas}></PlotTrendChart>
-            <BarTrendChart chartData={datas}></BarTrendChart>
+            {/* <BarTrendChart chartData={datas}></BarTrendChart> */}
         </ScrollView>
         </View>
         </>

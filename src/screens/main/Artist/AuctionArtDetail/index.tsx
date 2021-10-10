@@ -2,13 +2,14 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React,{useState,useEffect, useLayoutEffect,memo} from 'react';
-import { Text, View,StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import { Text, View,StyleSheet, Image, TouchableOpacity, Alert, Dimensions } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { Avatar, Button, Card, Title, Paragraph, Divider } from 'react-native-paper';
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis } from 'react-native-responsive-linechart';
 import RNFetchBlob from 'rn-fetch-blob';
 import ApiUrl from '~/GlobalConstant';
-import { AuctionArt, AuctionArtHistory, AuctionArtInfo } from '~/models/AuctionArt';
+import { AuctionArt, AuctionArtHistory, AuctionArtInfo, DetailLineChartData } from '~/models/AuctionArt';
 import { ArtistStackParamList } from '~/models/NavigationParam';
 const styles = StyleSheet.create(
     ({
@@ -42,48 +43,56 @@ interface ScatterXY{
 }
 
 interface ChartTrendProps{
-    chartData : AuctionArtHistory[];
+    chartData : DetailLineChartData[];
 }
 
 
+
+
 const CollectionChartTrend = ({chartData}:ChartTrendProps)=>{
-    let [data,SetData] = useState<ScatterXY[]>([]);
+    // let [data,SetData] = useState<ScatterXY[]>([]);
 
-    useEffect(()=>{
-        let tmp = chartData.map((v,i)=> {
-            return {x:i,y:v.money}
-        });
-        SetData(tmp);
+    // useEffect(()=>{
+    //     let tmp = chartData.map((v,i)=> {
+    //         return {x:i,y:v.money}
+    //     });
+    //     SetData(tmp);
 
-    },[chartData]);
+    // },[chartData]);
 
     return (
-        <Chart
-        style={{ height: 100, width: '100%' }}
-        data={[
-            { x: -2, y: 15 },
-            { x: -1, y: 10 },
-            { x: 0, y: 12 },
-            { x: 1, y: 7 },
-            { x: 2, y: 6 },
-            { x: 3, y: 8 },
-            { x: 4, y: 10 },
-            { x: 5, y: 8 },
-            { x: 6, y: 12 },
-            { x: 7, y: 14 },
-            { x: 8, y: 12 },
-            { x: 9, y: 13.5 },
-            { x: 10, y: 18 },
-        ]}
-        padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-        xDomain={{ min: -2, max: 10 }}
-        yDomain={{ min: 0, max: 20 }}
-        >
-        <VerticalAxis tickCount={11} theme={{ labels: { formatter: (v) => v.toFixed(2) } }} />
-        <HorizontalAxis tickCount={5} />
-        <Area theme={{ gradient: { from: { color: '#ffa502' }, to: { color: '#ffa502', opacity: 0.4 } }}} />
-        <Line theme={{ stroke: { color: '#ffa502', width: 5 }, scatter: { default: { width: 4, height: 4, rx: 2 }} }} />
-        </Chart>
+        (chartData!==null && chartData!==undefined)&&
+        <LineChart
+                bezier
+                data={{
+                labels: chartData['x'],                
+                datasets: chartData['y']
+                }}
+                verticalLabelRotation={90}
+                width={Dimensions.get("window").width*0.95} // from react-native
+                height={320}               
+                yAxisInterval={1} // optional, defaults to 1
+                chartConfig={{
+                    backgroundColor: '#1cc910',
+                    backgroundGradientFrom: '#eff3ff',
+                    backgroundGradientTo: '#efefef',            
+                color: (opacity = 1) =>`rgba(0, 0, 0, ${opacity})`,
+                labelColor: (opacity = 1) =>`rgba(0, 0, 0, ${opacity})`,
+                style: {
+                    borderRadius: 8,
+                    alignSelf:'center'
+                },
+                propsForDots: {
+                    r: "6",
+                    strokeWidth: "2",
+                    stroke: "#ffa726"
+                }
+                }}                
+                style={{
+                marginVertical: 8,
+                borderRadius: 16
+                }}
+            />
     )
 };
 
@@ -114,12 +123,12 @@ const getDetail = (item:AuctionArtInfo,key:string)=>{
     }
 };
 
-
+let initChartData = {x:[0,],y:[{data:[0,]},]};
 const AuctionArtDetail = ({route,navigation}:Props) =>{
     const {art_info_id} = route.params;
     let [artDetail,setArtDetail] = useState<AuctionArt>();
     let [auctionArtInfo,setAuctionArtInfo] = useState<AuctionArtInfo>({});
-    let [auctionArtHistory,setAuctionArtHistory] = useState<AuctionArtHistory[]>([]);
+    let [auctionArtHistory,setAuctionArtHistory] = useState<DetailLineChartData>(initChartData);
     const getArtDetail = async ()=>{
         try {            
             let url = `${ApiUrl['auctionart']}?artinfoid=${art_info_id}`;
@@ -180,7 +189,7 @@ const AuctionArtDetail = ({route,navigation}:Props) =>{
                     </View>
                     
                     <View>
-                        <CollectionChartTrend chartData={auctionArtHistory}></CollectionChartTrend>
+                        {/* <CollectionChartTrend chartData={auctionArtHistory}></CollectionChartTrend> */}
                         <Divider style={styles.divider}></Divider>
                         
                     </View>

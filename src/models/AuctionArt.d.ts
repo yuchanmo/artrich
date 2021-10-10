@@ -30,5 +30,10 @@ export interface AuctionArtHistory{
 
 export interface AuctionArt{
     auction_art_info:AuctionArtInfo;
-    auction_art_history :AuctionArtHistory[]
+    auction_art_history :DetailLineChartData
+}
+
+interface DetailLineChartData{
+    x:any[];
+    y:[{data:number[]}[]];
 }

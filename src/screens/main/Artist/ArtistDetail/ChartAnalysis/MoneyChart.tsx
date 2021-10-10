@@ -65,14 +65,10 @@ interface DetailLineChartData{
     y:[{data:number[]}[]];
 }
 
-interface ArtistDetailRankingChart{
+interface ArtistDetailMoneyChart{
     avg:DetailLineChartData;
     canvas:DetailLineChartData;
-    max:DetailLineChartData;
-    sum:DetailLineChartData;
-    count:DetailLineChartData;
-    recent:DetailLineChartData;
-    total:DetailLineChartData;
+    
 }
 
 interface Props{
@@ -80,18 +76,27 @@ interface Props{
 }
 
 
-let initChartData = {x:[0,],y:[{data:[0,]},]};
+let initChartData = {x:[0,],y:[{data:[0,],color:(opacity = 1) => `rgba(0, 0, 0, ${opacity})`,stroke:2},]};
 
+let colors = [(opacity = 1) => `rgba(0, 0, 0, ${opacity})`,(opacity = 1) => `rgba(255, 0, 0, ${opacity})`,(opacity = 1) => `rgba(0, 0, 255, ${opacity})`];
 
-
-const RankChart = ({artist_id}:Props)=>{
-    const [data,setData] =React.useState<ArtistDetailRankingChart>({avg:initChartData,canvas:initChartData,max:initChartData,count:initChartData,recent:initChartData,sum:initChartData,total:initChartData});
+const MoneyChart = ({artist_id}:Props)=>{
+    const [data,setData] =React.useState<ArtistDetailMoneyChart>({avg:initChartData,canvas:initChartData});
     const initData = async () =>{
         try {
-            let res = await RNFetchBlob.fetch('GET', `${ApiUrl['artistdetailranking']}?artistid=${artist_id}`);      
+            let res = await RNFetchBlob.fetch('GET', `${ApiUrl['artistdetailmoney']}?artistid=${artist_id}`);      
             let tmp = res.json();
+            for(let i = 0;i<3;i++){
+                tmp['avg']['y'][i]['color']=colors[i];
+                tmp['avg']['y'][i]['stroke']=2;
+                tmp['canvas']['y'][i]['color']=colors[i];
+                tmp['canvas']['y'][i]['stroke']=2;
+                
+
+            }
+            
             setData(tmp);            
-            setChartData(tmp['total'])    
+            setChartData(tmp['avg'])    
         } catch (error) {
             // Alert.alert('info',error.message);
             // Alert.alert('info',error.stack);
@@ -108,7 +113,7 @@ const RankChart = ({artist_id}:Props)=>{
     // const [chartKey,setChartKey] = useState<string>(chart_keys[0]);
     // const [chartData,setChartData] = useState(datas[chart_keys[0]]);
 
-    let filterButton = {'TOTAL RANK':'total','평균낙찰가':'avg','호당낙찰가':'canvas','최고낙찰가':'max','총낙찰가':'sum','출품수':'count'};
+    let filterButton = {'평균낙찰가':'avg','호당낙찰가':'canvas'};
     let [filterKey,setFilterKey] = React.useState<string>('avg');
     let [chartData,setChartData] = React.useState<DetailLineChartData>(initChartData);
 
@@ -118,7 +123,7 @@ const RankChart = ({artist_id}:Props)=>{
 
     return (
         <View>
-            <Text style={styles.titleText}>순위차트</Text>
+            <Text style={styles.titleText}>디테일차트분석</Text>
             <View style={styles.filterBtnContainer}>
             <FlatList                  
                   numColumns={3}             
@@ -134,12 +139,14 @@ const RankChart = ({artist_id}:Props)=>{
             <View style={{justifyContent:'center',alignItems:'center'}}>
                 
             <LineChart
+                bezier
                 data={{
                 labels: chartData['x'],
+                legend:chartData['legend'],
                 datasets: chartData['y']
                 }}
                 verticalLabelRotation={90}
-                width={Dimensions.get("window").width*0.98} // from react-native
+                width={Dimensions.get("window").width*0.95} // from react-native
                 height={320}               
                 yAxisInterval={1} // optional, defaults to 1
                 chartConfig={{
@@ -170,4 +177,4 @@ const RankChart = ({artist_id}:Props)=>{
 };
 
 
-export default memo(RankChart);
+export default memo(MoneyChart);

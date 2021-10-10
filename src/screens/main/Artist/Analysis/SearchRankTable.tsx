@@ -88,7 +88,7 @@ const SearchRankTable = ({route,navigation}:Props) => {
         </DataTable.Header>
 
         {data.map((v,i)=>(
-          <DataTable.Row key={i.toString()} onPress={()=>navigation.navigate('ArtistDetail',{name:v.artist_id})}>
+          <DataTable.Row key={i.toString()} onPress={()=>navigation.navigate('ArtistDetail',{artist_id:v.artist_id})}>
             <DataTable.Cell>{v.rank}</DataTable.Cell>
             <DataTable.Cell>{v.artist_name_kor_born}</DataTable.Cell>          
             <DataTable.Cell>{v.money}</DataTable.Cell> 

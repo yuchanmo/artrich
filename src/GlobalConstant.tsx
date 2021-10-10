@@ -1,6 +1,6 @@
 //const BaseUrl = 'http://localhost:5000';
-const BaseUrl = 'http://10.0.2.2:5000';
-//const BaseUrl = 'http://58.143.59.33:5555';
+//const BaseUrl = 'http://10.0.2.2:5000';
+const BaseUrl = 'http://58.143.59.33:5555';
 //
 
 
@@ -18,6 +18,8 @@ const ApiUrl ={
     artistarts : `${BaseUrl}/artistarts`,
     auctionart : `${BaseUrl}/auctionart`,
     artistranking:`${BaseUrl}/artistranking`,
+    artistdetailranking:`${BaseUrl}/artistdetailranking`,
+    artistdetailmoney:`${BaseUrl}/artistdetailmoney`,
     recentartistranking:`${BaseUrl}/recentartistranking`,
     recentpopularartistranking:`${BaseUrl}/recentpopularartistranking`,
     followingartistsauctionplan:`${BaseUrl}/followingartistsauctionplan`,

@@ -124,15 +124,15 @@ const Navigation = ()=> {
   return (
     <NavigationContainer>
       <RootStack.Navigator>
-      <RootStack.Screen name="TabMain" component={TabMain} options={{headerShown:false}}/>        
+      {/* <RootStack.Screen name="TabMain" component={TabMain} options={{headerShown:false}}/>         */}
       
-        {/* {
+        {
           !isSigned ?(       
             <RootStack.Screen name="StackSign" component={StackSign} options={{headerShown:false}}/>        
           ) : (        
             <RootStack.Screen name="TabMain" component={TabMain} options={{headerShown:false}}/>        
           )
-          }       */}
+          }      
       </RootStack.Navigator>
     </NavigationContainer>
   );

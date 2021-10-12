@@ -1,9 +1,13 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { RouteProp } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React,{useState,useEffect, useLayoutEffect,memo} from 'react';
-import { Text, View,StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View,StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis } from 'react-native-responsive-linechart';
+import { MyCollection } from '~/models/MyCollection';
+import { ArtistStackParamList } from '~/models/NavigationParam';
 const styles = StyleSheet.create(
     ({
         cotainer:{
@@ -84,15 +88,21 @@ const CollectionImage = ({img,idx,onPress})=>{
     );
 };
 
+interface Props{
+    route : RouteProp<ArtistStackParamList,"CollectionDetail">
+    navigation:NativeStackScreenProps<ArtistStackParamList,"CollectionDetail">;    
+};
 
 
-const CollectionDetail = ({}) =>{
-    
-    let imgs = [700,701,702,703,704,705].map((v,i)=>`https://picsum.photos/${v.toString()}`);
-    let [image,setImage] = useState<string>(imgs[0]);
-    let data = [1,2,3,4,5,6];
-    console.log(imgs);
-    console.log(image);
+const CollectionDetail = ({route,navigation}:Props) =>{
+    useLayoutEffect(()=>{
+        navigation.setOptions({
+          headerTitle:"컬렉션 상세 설명"
+        });
+      }, [navigation]);
+
+    const {collection} = route.params;
+    let [image,setImage] = useState<string>(collection?.img_list.length>0?collection.img_list[0]:""??"");
     return (
         <>
         <ScrollView>
@@ -103,17 +113,20 @@ const CollectionDetail = ({}) =>{
                 <FlatList       
                 style={styles.collectionFlatListContainer}
                     numColumns={3}             
-                    data={imgs}
-                    renderItem={({index,item})=><><CollectionImage idx={index} img={item} onPress={()=>setImage(imgs[index])}></CollectionImage></>}
+                    data={collection.img_list}
+                    renderItem={({index,item})=><><CollectionImage idx={index} img={item} onPress={()=>setImage(collection.img_list[index])}></CollectionImage></>}
                     keyExtractor={(item,i) =>  i.toString()}
                 />
-                <Title>Card title</Title>
-                <Paragraph>Card content</Paragraph>
+                <Title>{collection.title_kor}</Title>
+                <Title>({collection.title_eng})</Title>
+                <Paragraph>{collection.artist_name_kor}</Paragraph>
+                <Paragraph>{collection.size_height} x {collection.size_length}</Paragraph>
+                <Paragraph>ED{collection.edition}</Paragraph>
+                <Paragraph>{collection.buy_date}</Paragraph>
+                <Paragraph>{collection.price}</Paragraph>
+
             </Card.Content>
-            <Card.Actions>
-            <Button>Cancel</Button>
-            <Button>Ok</Button>
-            </Card.Actions>
+      
         </Card>
         <CollectionChartTrend></CollectionChartTrend>
         </ScrollView>

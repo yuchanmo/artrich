@@ -32,7 +32,7 @@ const Community = ({route,navigation}:Props) =>{
             <FollowingArtistSampleList route={route} navigation={navigation}></FollowingArtistSampleList>
             <FollowingArtistAuctionList route={route} navigation={navigation}></FollowingArtistAuctionList>
             <FollowingArtistReleaseList route={route} navigation={navigation}></FollowingArtistReleaseList>
-            <FollowingArtistTradeList route={route} navigation={navigation}></FollowingArtistTradeList>
+            {/* <FollowingArtistTradeList route={route} navigation={navigation}></FollowingArtistTradeList> */}
         </ScrollView>
         </>
         

@@ -1,9 +1,14 @@
 import { RouteProp } from '@react-navigation/core';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React,{memo,useState,useEffect, useLayoutEffect} from 'react';
-import { Text, View,StyleSheet, FlatList, Touchable, Alert,TouchableOpacity } from 'react-native';
+import { Text, View,StyleSheet, FlatList, Touchable, Alert,TouchableOpacity, ActivityIndicator } from 'react-native';
 
-import { Avatar, Card, Divider, Title } from 'react-native-paper';
+import { Avatar, Card, Divider, Paragraph, Title } from 'react-native-paper';
+import RNFetchBlob from 'rn-fetch-blob';
+import { SignContext } from '~/context/SignContext';
+import ApiUrl from '~/GlobalConstant';
+import { MyCollection } from '~/models/MyCollection';
+import { ArtistStackParamList } from '~/models/NavigationParam';
 import { getRandomInt } from '~/utils/random';
 
 const styles = StyleSheet.create(
@@ -23,7 +28,8 @@ const styles = StyleSheet.create(
         },
         nameTitle:{
             position:'absolute',
-            right:10,
+            left:100,
+            top : 20,
             color:'black'
         }
     })
@@ -32,18 +38,23 @@ const styles = StyleSheet.create(
 type Props = {
     route : RouteProp<ArtistStackParamList,"ArtistTabRoot">
     navigation:NativeStackScreenProps<ArtistStackParamList,"ArtistTabRoot">;    
+    item:MyCollection;
 };
 
-const CollectionItem = ({navigation,route,img}:Props)=>{
+const CollectionItem = ({navigation,route,item}:Props)=>{
     return (
         <>
         <View >
-            <TouchableOpacity onPress={()=>navigation.navigate('CollectionDetail')}>
+            <TouchableOpacity onPress={()=>navigation.navigate('CollectionDetail',{collection:item})}>
                 <Card style={styles.collectionItemContainer}>
-                    <Avatar.Image style={styles.avartarStyle} size={80} source={{uri:img}} />
-                    <Card.Content style={styles.nameTitle}>
-                    <Title >작가이름</Title>
-                    </Card.Content>
+                    <Avatar.Image style={styles.avartarStyle} size={80} source={{uri:item?.img_list.length>0?item.img_list[0]:''}} />
+                    <View style={styles.nameTitle}>
+                    
+                        <Title >{item.artist_name_kor}</Title>
+                        <Paragraph >{item.title_kor}</Paragraph>
+                    
+                    </View>
+                  
                 </Card>
                 
             </TouchableOpacity>
@@ -53,35 +64,64 @@ const CollectionItem = ({navigation,route,img}:Props)=>{
 };
 
 
+let init:MyCollection ={
+    artist_id:0,
+    artist_name_eng:'',
+    artist_name_kor:'',
+    birth:'',
+    buy_date:'',
+    canvas:'',
+    create_time:'',
+    death:'',
+    edition:'',
+    image_name:'',
+    img_list:[],
+    price:0,
+    size_height:'',
+    size_length:'',
+    title_eng:'',
+    title_kor:'',
+    unit_cd:'',
+    user_art_id:0,
+    user_id:0,
+
+};
 
 
 const CollectionAllList = ({route,navigation}:Props) =>{
-    let generateSample = (nums)=>{
-        return nums.map((v,i)=>`https://picsum.photos/${getRandomInt(400,600).toString()}`); 
-    };
-
-    let data = [1,2,3,4,5,6];
-    let tmp = generateSample(data); 
-    const [samples,setSamples] = useState<string[]>(tmp);
+    const {userId} = React.useContext<ISignContext>(SignContext);
+    const [data,setData] = useState<MyCollection[]>([init,]);
     const [isFetching, setIsFetching] = useState(false);
+    const [isLoading,setIsLoading] = useState<boolean>(false);
 
-        
-    let showMore = ()=>{
-        setIsFetching(true);
-        let s = generateSample([1,2,3]);
-        setSamples((old)=>[...old,...s]);
-        setIsFetching(false);
+    const getMyCollectionData = async () =>{
+        try {
+            setIsLoading(true);
+            let url = `${ApiUrl['mycollection']}?userid=${userId}&sample=False`;
+            //Alert.alert('auction_',url);
+            let res = await RNFetchBlob.fetch('GET', url);            
+            setData(res.json());
+            setIsLoading(false);
+            console.log(res.json());           
+        } catch (error) {
+            Alert.alert('rr',error.toString());
+            //Alert.alert('error',error.toString());
+        }
 
     };
+
+    useEffect(()=>{
+        getMyCollectionData();
+    },[]);
+    
     return (
         <>
         <View>
-            <FlatList
-                        refreshing={isFetching}
-                        onEndReached={showMore}
-                        data={samples}
+        {isLoading &&<ActivityIndicator size="large" color="#00ff00" />}
+            <FlatList                        
+                        data={data}
                         progressViewOffset={100}
-                        renderItem={({index,item})=><><CollectionItem img={item} navigation={navigation} route={route}></CollectionItem></>}
+                        renderItem={({index,item})=><><CollectionItem item={item} navigation={navigation} route={route}></CollectionItem></>}
                         keyExtractor={(item,i) =>  i.toString()}
                     />
             <Divider color='black' orientation="horizontal"></Divider>

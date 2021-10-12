@@ -1,4 +1,5 @@
 import { ArtistListResult } from "./ArtistList";
+import { MyCollection } from "./MyCollection";
 
 type LoginStackParamList = {
     LoginScreen:undefined;
@@ -32,7 +33,7 @@ type ArtistStackParamList = {
     SellList :undefined;
     CollectionAllList:undefined;
     CollectionSampleList:undefined;
-    CollectionDetail:undefined;
+    CollectionDetail:{collection:MyCollection};
     ArtistDetail:{artist_id:number|undefined};
     ArtList:{artist_id:number|undefined};
     ArtDetail:{art_info_id:number|undefined};

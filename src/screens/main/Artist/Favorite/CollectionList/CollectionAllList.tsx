@@ -45,6 +45,7 @@ const CollectionItem = ({navigation,route,item}:Props)=>{
     return (
         <>
         <View >
+            {(item!==null || item!==undefined) &&
             <TouchableOpacity onPress={()=>navigation.navigate('CollectionDetail',{collection:item})}>
                 <Card style={styles.collectionItemContainer}>
                     <Avatar.Image style={styles.avartarStyle} size={80} source={{uri:item?.img_list.length>0?item.img_list[0]:''}} />
@@ -58,6 +59,7 @@ const CollectionItem = ({navigation,route,item}:Props)=>{
                 </Card>
                 
             </TouchableOpacity>
+}
         </View>
         </>
     )

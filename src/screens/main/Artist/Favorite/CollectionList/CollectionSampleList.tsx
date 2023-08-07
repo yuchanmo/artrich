@@ -29,7 +29,10 @@ type Props = {
 
 const CollectionItem = ({navigation,route,item}:Props)=>{
     return (
+        
+           
         <View style={styles.sampleFlatListItemCotainer}>
+            { (item!==null || item!==undefined) &&
         <TouchableOpacity style={styles.sampleFlatListItemButton} onPress={()=>navigation.navigate('CollectionDetail',{collection:item})}>
               {/* <ImageBackground
                 source={ArtInfo.ImageUrl}
@@ -54,9 +57,11 @@ const CollectionItem = ({navigation,route,item}:Props)=>{
                                    
                 </View>
             </TouchableOpacity>
+}           
         </View>
     )
-};
+            }
+
 
 let init:MyCollection ={
     artist_id:0,

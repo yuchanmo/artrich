@@ -18,3 +18,8 @@ export const nameValidator = (name: string) => {
 
   return '';
 };
+
+
+export const nullOrEmptyValidator = (val:object)=>{
+  return val === null || val ===undefined
+};

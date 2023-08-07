@@ -102,10 +102,13 @@ const CollectionDetail = ({route,navigation}:Props) =>{
       }, [navigation]);
 
     const {collection} = route.params;
-    let [image,setImage] = useState<string>(collection?.img_list.length>0?collection.img_list[0]:""??"");
+    // Alert.alert('info',JSON.stringify(collection))
+    let tmp = (collection!==null && collection!==undefined ) ? (collection.img_list.length>0 ? collection.img_list[0]: ""):"";
+    let [image,setImage] = useState<string>(tmp);
     return (
         <>
         <ScrollView>
+            {(collection!==null && collection!==undefined) && 
         <Card>           
             
             <Card.Cover source={{ uri: image }} />
@@ -128,7 +131,9 @@ const CollectionDetail = ({route,navigation}:Props) =>{
             </Card.Content>
       
         </Card>
+}
         <CollectionChartTrend></CollectionChartTrend>
+        
         </ScrollView>
         </>
         
